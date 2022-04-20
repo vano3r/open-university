@@ -28,5 +28,5 @@ public class Group {
 
     @OneToMany
     @JoinColumn(name = "group_id")
-    List<DefaultUser> students = new ArrayList<>();
+    List<CustomUser> students = new ArrayList<>();
 }
