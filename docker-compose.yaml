@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: university-db
+    environment:
+      - POSTGRES_DB=university_db
+      - POSTGRES_USER=un_admin
+      - POSTGRES_PASSWORD=un_password
+    ports:
+      - "5432:5432"
