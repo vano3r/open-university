@@ -2,66 +2,46 @@ package pro.appwork.open_university.security;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pro.appwork.open_university.model.entity.CustomUser;
 
 import java.util.Collection;
-import java.util.List;
 
 import static pro.appwork.open_university.model.enums.UserState.ACTIVE;
 
-@Data
-public class CustomUserDetails implements UserDetails {
-    private final String email;
-    private final String password;
-    private final List<SimpleGrantedAuthority> authorities;
-    private final boolean isActive;
-
+public record CustomUserDetails(CustomUser user) implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return user.getAuthorities();
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.password();
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return user.email();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return isActive;
+        return user.state().equals(ACTIVE);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isActive;
+        return user.state().equals(ACTIVE);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isActive;
+        return user.state().equals(ACTIVE);
     }
 
     @Override
     public boolean isEnabled() {
-        return isActive;
-    }
-
-    public static UserDetails fromDefaultUser(CustomUser user) {
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                user.getState().equals(ACTIVE),
-                user.getState().equals(ACTIVE),
-                user.getState().equals(ACTIVE),
-                user.getState().equals(ACTIVE),
-                user.getAuthorities()
-        );
+        return user.state().equals(ACTIVE);
     }
 }

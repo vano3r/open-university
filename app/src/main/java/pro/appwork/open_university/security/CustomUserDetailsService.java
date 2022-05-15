@@ -19,6 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 () -> new UsernameNotFoundException("User not fount be email " + email)
         );
 
-        return CustomUserDetails.fromDefaultUser(user);
+        return new CustomUserDetails(user);
     }
 }

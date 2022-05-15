@@ -1,9 +1,7 @@
 package pro.appwork.open_university.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pro.appwork.open_university.model.enums.UserRole;
@@ -25,23 +23,36 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "t_user")
+@Accessors(fluent = true)
 @FieldDefaults(level = PRIVATE)
+@ToString(onlyExplicitlyIncluded = true)
 public class CustomUser {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @ToString.Include
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @ToString.Include
     String firstName;
+    @ToString.Include
     String lastName;
+    @ToString.Include
     String middleName;
     @Email
+    @ToString.Include
     @Column(unique = true)
     String email;
     String password;
 
-    @Enumerated(value = STRING)
+    @ToString.Include
+    @Enumerated(EnumType.STRING)
     UserRole role;
-    @Enumerated(value = STRING)
+    @ToString.Include
+    @Enumerated(EnumType.STRING)
     UserState state;
+
+    @ManyToOne
+    Group group;
 
     @OneToMany
     @JoinColumn(name = "teacher_id")
