@@ -9,3 +9,9 @@ services:
       - POSTGRES_PASSWORD=un_password
     ports:
       - "5432:5432"
+  mail:
+    image: maildev/maildev
+    container_name: university-maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
