@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Регистрация</title>
+</head>
+<body>
+<form th:action="@{/student-registration}" method="post" th:object="${student}">
+    <h2 class="h2">Регистрация</h2>
+
+    <span th:text="*{email}"></span>
+    <input id="email" type="hidden" th:field="*{email}" />
+    <hr>
+
+    <label for="name">Имя: </label>
+    <input id="name" type="text" th:field="*{name}" />
+    <br>
+
+    <label for="last-name">Фамилия: </label>
+    <input id="last-name" type="text" th:field="*{lastName}" />
+    <br>
+
+    <label for="middle-name">Отчество: </label>
+    <input id="middle-name" type="text" th:field="*{middleName}" />
+    <br>
+
+    <label for="group">Выберите группу: </label>
+    <select id="group" th:field="*{group}">
+        <option th:each="group : ${groups}" th:value="${group}" th:text="${group}" />
+    </select>
+    <br>
+
+    <label for="password">Пароль: </label>
+    <input id="password" th:field="*{password}" type="password" />
+    <br>
+
+    <label for="repeat-password">Повторите пароль: </label>
+    <input id="repeat-password" th:field="*{repeatPassword}" type="password" />
+    <br>
+
+    <button type="submit">Зарегистрироваться</button>
+</form>
+</body>
+</html>
