@@ -26,10 +26,10 @@ public class RegistrationController {
             model.addAttribute("error", "Ссылка недействительна!");
             return "student-registration-error-page";
         }
-
         List<String> groups = List.of("ИВТ-15.04", "М.ПИН.РИС-19.04");
         StudentDto student = new StudentDto();
-//        student.setEmail(email);
+        String email = emailTokenService.getByToken(token).getEmail();
+        student.setEmail(email);
         model.addAttribute("student", student);
         model.addAttribute("groups", groups);
 
