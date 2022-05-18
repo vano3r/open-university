@@ -6,6 +6,7 @@
 
 </head>
 <body>
+<div th:insert="~{layout/navbar-layout}"></div>
 <form th:action="@{/students}" method="post">
     <label for="email">Введите почту для приглашения:</label>
     <input id="email" type="email" name="email">

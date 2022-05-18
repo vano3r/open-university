@@ -26,6 +26,7 @@ public class App {
             CustomUser student1 = new CustomUser();
             CustomUser student2 = new CustomUser();
             CustomUser student3 = new CustomUser();
+            CustomUser student4 = new CustomUser();
 
             CustomUser teacher = new CustomUser();
 
@@ -60,6 +61,15 @@ public class App {
                     .role(UserRole.STUDENT)
                     .state(UserState.ACTIVE);
 
+            student4
+                    .firstName("Васек")
+                    .lastName("Пупкин")
+                    .middleName("Попович")
+                    .email("vasya.pupkin@test.ru")
+                    .password(passwordEncoder.encode("123"))
+                    .role(UserRole.STUDENT)
+                    .state(UserState.ACTIVE);
+
             teacher
                     .firstName("Александр")
                     .lastName("Орлов")
@@ -88,6 +98,7 @@ public class App {
             userRepository.save(student1);
             userRepository.save(student2);
             userRepository.save(student3);
+            userRepository.save(student4);
 
             userRepository.save(teacher);
 

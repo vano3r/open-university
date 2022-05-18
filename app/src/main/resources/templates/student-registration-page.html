@@ -9,6 +9,7 @@
     <title>Регистрация</title>
 </head>
 <body>
+<div th:insert="~{layout/navbar-layout}"></div>
 <form th:action="@{/registration/student}" method="post" th:object="${student}">
     <h2 class="h2">Регистрация</h2>
 

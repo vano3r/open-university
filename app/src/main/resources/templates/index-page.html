@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<!--<div th:insert="~{layout/navbar-layout}"></div>-->
-<p th:text="${user.lastName() + ' ' + user.firstName() + ' ' + user.middleName() + ' ' + user.group()}"></p>
-<!--<table>-->
-<!--    <tr th:each="subject : ${user.subjects()}">-->
-<!--        <td th:text="${subject.getId()}"></td>-->
-<!--        <td th:text="${subject.getName()}"></td>-->
-<!--    </tr>-->
-<!--</table>-->
+<div th:insert="~{layout/navbar-layout}"></div>
+<h2>Привет, [[${user.lastName() + ' ' + user.firstName() + ' ' + user.middleName()}]]</h2>
 </body>
 </html>
