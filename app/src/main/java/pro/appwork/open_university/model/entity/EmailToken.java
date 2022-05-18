@@ -1,10 +1,8 @@
 package pro.appwork.open_university.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -26,6 +24,9 @@ public class EmailToken {
 
     @Column
     String email;
+
+    @Column
+    Long groupId;
 
     @Column
     LocalDateTime createdDate;

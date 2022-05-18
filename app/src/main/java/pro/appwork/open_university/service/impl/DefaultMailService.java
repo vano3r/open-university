@@ -35,12 +35,12 @@ public class DefaultMailService implements MailService {
 
     @Async
     @Override
-    public void send(String to) {
+    public void send(String to, Long groupId) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            helper.setText(TEXT.formatted(tokenService.generate(to).getToken()), true);
+            helper.setText(TEXT.formatted(tokenService.generate(to, groupId).getToken()), true);
             helper.setTo(to);
             helper.setFrom(from);
             helper.setSubject(SUBJECT);

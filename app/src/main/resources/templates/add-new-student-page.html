@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+
 </head>
 <body>
-
 <form th:action="@{/students}" method="post">
-    <p>
-        <label for="email">Введите почту для приглашения</label>
-    </p>
-    <p>
-        <input id="email" type="email" name="email">
-    </p>
+    <label for="email">Введите почту для приглашения:</label>
+    <input id="email" type="email" name="email">
+    <br>
+
+    <label for="group">Выберите группу: </label>
+    <select id="group" name="groupId">
+        <option th:each="group : ${groups}" th:value="${group.id()}" th:text="${group.name()}" />
+    </select>
+    <br>
+
     <button type="submit">Выслать приглашение</button>
 </form>
 </body>
