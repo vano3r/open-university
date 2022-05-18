@@ -9,7 +9,7 @@
     <title>Регистрация</title>
 </head>
 <body>
-<form th:action="@{/student-registration}" method="post" th:object="${student}">
+<form th:action="@{/registration/student}" method="post" th:object="${student}">
     <h2 class="h2">Регистрация</h2>
 
     <span th:text="*{email}"></span>

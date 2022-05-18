@@ -22,7 +22,7 @@ public class DefaultMailService implements MailService {
             <hr>
             Для продолжения регистрации пройдите по ссылке:
             <br>
-            http://localhost:8080/student-registration/%s
+            http://localhost:8080/registration/student/%s
             <hr>
             """;
     private static final String SUBJECT = """

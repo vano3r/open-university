@@ -1,11 +1,11 @@
 package pro.appwork.open_university.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pro.appwork.open_university.model.entity.EmailToken;
 import pro.appwork.open_university.repository.EmailTokenRepository;
 import pro.appwork.open_university.service.EmailTokenService;
+import pro.appwork.open_university.service.MailService;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
