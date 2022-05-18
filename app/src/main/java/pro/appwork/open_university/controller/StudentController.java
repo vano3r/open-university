@@ -19,14 +19,14 @@ public class StudentController {
 
     @GetMapping()
     public String viewAddNewStudentPage(Model model) {
-        model.addAttribute("groups", groupService.findAll());
+        model.addAttribute("groups", groupService.getAll());
         return "add-new-student-page";
     }
 
     @PostMapping
     public String addNewStudent(@RequestParam String email, @RequestParam Long groupId, Model model) {
         mailService.send(email, groupId);
-        model.addAttribute("groups", groupService.findAll());
+        model.addAttribute("groups", groupService.getAll());
         return "add-new-student-page";
     }
 }

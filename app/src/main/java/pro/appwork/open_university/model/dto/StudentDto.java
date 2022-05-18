@@ -3,9 +3,11 @@ package pro.appwork.open_university.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(fluent = true)
 @ToString
 public class StudentDto {
     private String firstName;

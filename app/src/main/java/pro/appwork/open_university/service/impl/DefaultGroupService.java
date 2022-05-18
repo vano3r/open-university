@@ -15,7 +15,12 @@ public class DefaultGroupService implements GroupService {
     private final GroupRepository groupRepository;
 
     @Override
-    public List<Group> findAll() {
+    public List<Group> getAll() {
         return groupRepository.findAll();
+    }
+
+    @Override
+    public Group getGroupById(Long id) {
+        return groupRepository.getById(id);
     }
 }

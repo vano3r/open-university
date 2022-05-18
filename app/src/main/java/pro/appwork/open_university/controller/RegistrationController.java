@@ -6,12 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pro.appwork.open_university.model.dto.StudentDto;
 import pro.appwork.open_university.model.entity.CustomUser;
+import pro.appwork.open_university.model.entity.EmailToken;
 import pro.appwork.open_university.model.enums.UserRole;
 import pro.appwork.open_university.model.enums.UserState;
 import pro.appwork.open_university.service.EmailTokenService;
+import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.UserService;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,19 +19,17 @@ import java.util.List;
 public class RegistrationController {
     private final EmailTokenService emailTokenService;
     private final UserService userService;
+    private final GroupService groupService;
 
     @GetMapping("/student/{token}")
     public String studentRegistrationPage(@PathVariable String token, Model model) {
-        if ("error".equals(token)) {
-            model.addAttribute("error", "Ссылка недействительна!");
-            return "student-registration-error-page";
-        }
-        List<String> groups = List.of("ИВТ-15.04", "М.ПИН.РИС-19.04");
+        EmailToken emailToken = emailTokenService.getByToken(token);
+
         StudentDto student = new StudentDto();
-        String email = emailTokenService.getByToken(token).getEmail();
-        student.setEmail(email);
+        student.email(emailToken.getEmail());
+        student.group(groupService.getGroupById(emailToken.getGroupId()).name());
+
         model.addAttribute("student", student);
-        model.addAttribute("groups", groups);
 
         return "student-registration-page";
     }
@@ -41,11 +39,11 @@ public class RegistrationController {
 
         CustomUser newUser = new CustomUser(
                 null,
-                student.getFirstName(),
-                student.getLastName(),
-                student.getMiddleName(),
-                student.getEmail(),
-                student.getPassword(),
+                student.firstName(),
+                student.lastName(),
+                student.middleName(),
+                student.email(),
+                student.password(),
                 UserRole.STUDENT,
                 UserState.ACTIVE,
                 null,

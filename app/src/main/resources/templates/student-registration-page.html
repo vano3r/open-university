@@ -14,6 +14,10 @@
 
     <span th:text="*{email}"></span>
     <input id="email" type="hidden" th:field="*{email}" />
+    <br>
+
+    <span th:text="*{group}"></span>
+    <input id="group-name" type="hidden" th:field="*{email}" />
     <hr>
 
     <label for="first-name">Имя: </label>
@@ -26,12 +30,6 @@
 
     <label for="middle-name">Отчество: </label>
     <input id="middle-name" type="text" th:field="*{middleName}" />
-    <br>
-
-    <label for="group">Выберите группу: </label>
-    <select id="group" th:field="*{group}">
-        <option th:each="group : ${groups}" th:value="${group}" th:text="${group}" />
-    </select>
     <br>
 
     <label for="password">Пароль: </label>
