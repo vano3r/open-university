@@ -2,6 +2,7 @@ package pro.appwork.open_university.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pro.appwork.open_university.model.entity.EmailToken;
 import pro.appwork.open_university.repository.EmailTokenRepository;
 import pro.appwork.open_university.service.EmailTokenService;
@@ -34,5 +35,11 @@ public class DefaultEmailTokenService implements EmailTokenService {
         return repository.findByToken(token).orElseThrow(
                 () -> new RuntimeException("Not found token")
         );
+    }
+
+    @Override
+    @Transactional
+    public void removeToken(String token) {
+        repository.deleteByToken(token);
     }
 }

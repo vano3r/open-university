@@ -19,7 +19,7 @@ public class EmailToken {
     @GeneratedValue(strategy = IDENTITY)
     Long id;
 
-    @Column
+    @Column(unique = true)
     String token;
 
     @Column

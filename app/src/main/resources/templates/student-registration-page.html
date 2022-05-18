@@ -13,11 +13,9 @@
     <h2 class="h2">Регистрация</h2>
 
     <span th:text="*{email}"></span>
-    <input id="email" type="hidden" th:field="*{email}" />
     <br>
 
-    <span th:text="*{group}"></span>
-    <input id="group-name" type="hidden" th:field="*{email}" />
+    <span th:text="*{group.name}"></span>
     <hr>
 
     <label for="first-name">Имя: </label>
@@ -39,6 +37,10 @@
     <label for="repeat-password">Повторите пароль: </label>
     <input id="repeat-password" th:field="*{repeatPassword}" type="password" />
     <br>
+
+    <input id="token" type="hidden" name="token" th:value="${token}" />
+    <input id="email" type="hidden" th:field="*{email}" />
+    <input id="group" type="hidden" th:field="*{group}" />
 
     <button type="submit">Зарегистрироваться</button>
 </form>

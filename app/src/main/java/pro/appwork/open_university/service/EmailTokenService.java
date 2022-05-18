@@ -6,4 +6,6 @@ public interface EmailTokenService {
     EmailToken generate(String email, Long groupId);
 
     EmailToken getByToken(String token);
+
+    void removeToken(String token);
 }

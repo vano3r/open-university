@@ -3,18 +3,17 @@ package pro.appwork.open_university.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
+import pro.appwork.open_university.model.entity.Group;
 
 @Getter
 @Setter
-@Accessors(fluent = true)
 @ToString
 public class StudentDto {
     private String firstName;
     private String lastName;
     private String middleName;
     private String email;
-    private String group;
+    private Group group;
     private String password;
     private String repeatPassword;
 }

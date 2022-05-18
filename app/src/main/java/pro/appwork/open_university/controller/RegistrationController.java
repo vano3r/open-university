@@ -26,31 +26,35 @@ public class RegistrationController {
         EmailToken emailToken = emailTokenService.getByToken(token);
 
         StudentDto student = new StudentDto();
-        student.email(emailToken.getEmail());
-        student.group(groupService.getGroupById(emailToken.getGroupId()).name());
+        student.setEmail(emailToken.getEmail());
+        student.setGroup(groupService.getGroupById(emailToken.getGroupId()));
 
+        model.addAttribute("token", emailToken.getToken());
         model.addAttribute("student", student);
 
         return "student-registration-page";
     }
 
     @PostMapping("/student")
-    public String studentRegistration(@ModelAttribute StudentDto student) {
+    public String studentRegistration(@ModelAttribute StudentDto student, @RequestParam("token") String token) {
 
         CustomUser newUser = new CustomUser(
                 null,
-                student.firstName(),
-                student.lastName(),
-                student.middleName(),
-                student.email(),
-                student.password(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getMiddleName(),
+                student.getEmail(),
+                student.getPassword(),
                 UserRole.STUDENT,
                 UserState.ACTIVE,
-                null,
+                student.getGroup(),
                 null,
                 null
         );
+
         userService.createNew(newUser);
+
+        emailTokenService.removeToken(token);
 
         return "login-page";
     }
