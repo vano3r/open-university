@@ -20,7 +20,7 @@ public class RegistrationController {
     private final EmailTokenService emailTokenService;
     private final UserService userService;
 
-    @GetMapping("/student-registration/{token}")
+    @GetMapping("/student/{token}")
     public String studentRegistrationPage(@PathVariable String token, Model model) {
         if ("error".equals(token)) {
             model.addAttribute("error", "Ссылка недействительна!");
