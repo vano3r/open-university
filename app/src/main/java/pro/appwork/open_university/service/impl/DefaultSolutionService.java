@@ -39,9 +39,11 @@ public class DefaultSolutionService implements SolutionService {
         user.solutions().add(solution);
 
         try {
-            File newFile = new File(fullPathUpload);
+            File newFile = new File(fullPathUpload).getParentFile();
 
-            newFile.getParentFile().mkdirs();
+            if (!newFile.exists()) {
+                newFile.mkdirs();
+            }
             FileOutputStream outputStream = new FileOutputStream(fullPathUpload);
 
             outputStream.write(file.getBytes());
