@@ -6,12 +6,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pro.appwork.open_university.model.entity.CustomUser;
-import pro.appwork.open_university.model.entity.Group;
+import pro.appwork.open_university.model.entity.*;
 import pro.appwork.open_university.model.enums.UserRole;
 import pro.appwork.open_university.model.enums.UserState;
 import pro.appwork.open_university.repository.GroupRepository;
+import pro.appwork.open_university.repository.SubjectRepository;
+import pro.appwork.open_university.repository.TaskRepository;
 import pro.appwork.open_university.repository.UserRepository;
+
+import java.util.List;
 
 @SpringBootApplication
 public class App {
@@ -21,7 +24,9 @@ public class App {
 
     @Bean
     public CommandLineRunner CommandLineRunnerBean(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                                                   GroupRepository groupRepository) {
+                                                   GroupRepository groupRepository,
+                                                   SubjectRepository subjectRepository,
+                                                   TaskRepository taskRepository) {
         return (args) -> {
             CustomUser student1 = new CustomUser();
             CustomUser student2 = new CustomUser();
@@ -34,11 +39,51 @@ public class App {
             Group group3 = new Group();
             Group group4 = new Group();
 
+            Task task1 = Task.builder()
+                    .name("ВКР")
+                    .build();
+            Task task2 = Task.builder()
+                    .name("КР")
+                    .build();
+            Task task3 = Task.builder()
+                    .name("НИР")
+                    .build();
+
+            taskRepository.save(task1);
+            taskRepository.save(task2);
+            taskRepository.save(task3);
+
+            Subject subject1 = new Subject();
+            subject1.setName("ИИС");
+            Subject subject2 = new Subject();
+            subject2.setName("ИАТ");
+            subject1.setTasks(List.of(task1, task2));
+            subject2.setTasks(List.of(task3));
+
+
+            group1
+                    .name("ИВТ-15.04")
+                    .subjects(List.of(subject1, subject2))
+                    .stage(1);
+
+            group2
+                    .name("М.ПИН.РИС-19.04")
+                    .stage(2);
+
+            group3
+                    .name("ИСТ-18.06")
+                    .stage(2);
+
+            group4
+                    .name("ВТА-17.99")
+                    .stage(3);
+
             student1
                     .firstName("Иван")
                     .lastName("Иванов")
                     .middleName("Иванович")
                     .email("student1@mail.ru")
+                    .group(group1)
                     .password(passwordEncoder.encode("student"))
                     .role(UserRole.STUDENT)
                     .state(UserState.ACTIVE);
@@ -69,32 +114,19 @@ public class App {
                     .role(UserRole.TEACHER)
                     .state(UserState.ACTIVE);
 
-            group1
-                    .name("ИВТ-15.04")
-                    .stage(1);
+            subjectRepository.save(subject1);
+            subjectRepository.save(subject2);
 
-            group2
-                    .name("М.ПИН.РИС-19.04")
-                    .stage(2);
-
-            group3
-                    .name("ИСТ-18.06")
-                    .stage(2);
-
-            group4
-                    .name("ВТА-17.99")
-                    .stage(3);
+            groupRepository.save(group1);
+            groupRepository.save(group2);
+            groupRepository.save(group3);
+            groupRepository.save(group4);
 
             userRepository.save(student1);
             userRepository.save(student2);
             userRepository.save(student3);
 
             userRepository.save(teacher);
-
-            groupRepository.save(group1);
-            groupRepository.save(group2);
-            groupRepository.save(group3);
-            groupRepository.save(group4);
         };
     }
 }

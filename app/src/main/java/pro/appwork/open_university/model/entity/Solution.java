@@ -1,25 +1,29 @@
 package pro.appwork.open_university.model.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "t_solution")
 public class Solution {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    Long id;
-    String filePath;
-    Integer version;
+    private Long id;
+
+    @Column
+    private String filePath;
+
+    @Column
+    private Integer version;
+
+    @ManyToOne
+    private Task task;
 }
