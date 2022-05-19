@@ -33,3 +33,5 @@ spring:
           connection-timeout: 5000
           timeout: 3000
           write-timeout: 5000
+
+upload-file-path: /Users/ivan.vorobev/DevProjects/appwork/open-university/app/upload/

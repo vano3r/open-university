@@ -1,6 +1,7 @@
 package pro.appwork.open_university.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pro.appwork.open_university.model.entity.CustomUser;
@@ -17,5 +18,10 @@ public class DefaultUserService implements UserService {
     public void createNew(CustomUser user) {
         user.password(passwordEncoder.encode(user.password()));
         repository.save(user);
+    }
+
+    @Override
+    public CustomUser getById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

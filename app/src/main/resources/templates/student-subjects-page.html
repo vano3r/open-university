@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2 th:utext="${student.lastName() + ' ' + student.firstName() + ' ' + student.middleName()}"></h2>
+<h3 th:utext="${student.group().name()}"></h3>
+<div>
+    <ul>
+        <li th:each="subject: ${student.group().subjects()}">
+            <p th:utext="${subject.getName()}"></p>
+            <ul>
+                <li th:each="task: ${subject.getTasks()}">
+                    <form th:action="@{'/students/' + ${student.id()} + '/subjects/' + ${subject.getId()} + '/tasks/' + ${task.getId()}}"
+                          method="post" enctype="multipart/form-data">
+                        <span th:utext="${task.getName()}"></span>
+
+                        <input type="file" th:name="file">
+                        <input type="submit" value="Отправить решение">
+                    </form>
+                    <br>
+                </li>
+
+            </ul>
+
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
