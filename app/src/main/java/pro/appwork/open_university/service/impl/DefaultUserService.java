@@ -16,8 +16,8 @@ public class DefaultUserService implements UserService {
 
     @Override
     public void createNew(CustomUser user) {
-        user.password(passwordEncoder.encode(user.password()));
-        repository.save(user);
+//        user.getPassword()(passwordEncoder.encode(user.password()));
+//        repository.save(user);
     }
 
     @Override

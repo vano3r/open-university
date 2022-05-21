@@ -1,6 +1,7 @@
 package pro.appwork.open_university.model.entity;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -8,10 +9,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
-@Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "t_solution")
 public class Solution {
     @Id
@@ -24,6 +23,9 @@ public class Solution {
     @Column
     private Integer version;
 
-    @ManyToOne
-    private Task task;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TaskLesson task;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
 }

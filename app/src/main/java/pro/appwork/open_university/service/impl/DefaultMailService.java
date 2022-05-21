@@ -6,8 +6,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import pro.appwork.open_university.service.EmailTokenService;
+import pro.appwork.open_university.model.entity.Group;
+import pro.appwork.open_university.model.enums.UserRole;
 import pro.appwork.open_university.service.MailService;
+import pro.appwork.open_university.service.RegistrationTokenRepository;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -16,7 +18,7 @@ import javax.mail.internet.MimeMessage;
 @RequiredArgsConstructor
 public class DefaultMailService implements MailService {
     private final JavaMailSender mailSender;
-    private final EmailTokenService tokenService;
+    private final RegistrationTokenRepository tokenService;
 
     private static final String TEXT = """
             <hr>
@@ -35,12 +37,12 @@ public class DefaultMailService implements MailService {
 
     @Async
     @Override
-    public void send(String to, Long groupId) {
+    public void send(String to, UserRole role, Group group) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            helper.setText(TEXT.formatted(tokenService.generate(to, groupId).getToken()), true);
+            helper.setText(TEXT.formatted(tokenService.generate(to, role, group).getToken()), true);
             helper.setTo(to);
             helper.setFrom(from);
             helper.setSubject(SUBJECT);

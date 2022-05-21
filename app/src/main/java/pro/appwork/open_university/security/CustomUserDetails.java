@@ -17,31 +17,31 @@ public record CustomUserDetails(CustomUser user) implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.password();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.email();
+        return user.getEmail();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return user.state().equals(ACTIVE);
+        return user.getState().equals(ACTIVE);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.state().equals(ACTIVE);
+        return user.getState().equals(ACTIVE);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return user.state().equals(ACTIVE);
+        return user.getState().equals(ACTIVE);
     }
 
     @Override
     public boolean isEnabled() {
-        return user.state().equals(ACTIVE);
+        return user.getState().equals(ACTIVE);
     }
 }

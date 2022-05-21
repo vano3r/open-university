@@ -13,8 +13,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "t_group")
-public class Group {
+@Table(name = "t_lesson")
+public class Lesson {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -22,7 +22,17 @@ public class Group {
     @Column
     private String name;
 
+    @ManyToOne
+    private CourseGroup course;
+
+    @ManyToOne
+    private Teacher teacher;
+
     @Singular
-    @OneToMany(mappedBy = "group")
-    private List<Student> students = new ArrayList<>();
+    @OneToMany(
+            mappedBy = "task",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<TaskLesson> tasks = new ArrayList<>();
 }

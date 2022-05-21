@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.appwork.open_university.model.entity.CustomUser;
-import pro.appwork.open_university.model.entity.Subject;
 import pro.appwork.open_university.model.entity.Task;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.MailService;
@@ -31,7 +30,7 @@ public class StudentController {
 
     @PostMapping
     public String addNewStudent(@RequestParam String email, @RequestParam Long groupId, Model model) {
-        mailService.send(email, groupId);
+        mailService.send(email, null,null);
         model.addAttribute("groups", groupService.getAll());
         return "add-new-student-page";
     }
@@ -53,18 +52,18 @@ public class StudentController {
 
         CustomUser student = userService.getById(studentId);
 
-        Subject subject = student.group().subjects().stream()
-                .filter(sbj -> sbj.getId().equals(subjectId))
-                .findFirst()
-                .orElseThrow();
+//        Subject subject = student.group().subjects().stream()
+//                .filter(sbj -> sbj.getId().equals(subjectId))
+//                .findFirst()
+//                .orElseThrow();
+//
+//        Task task = subject.getTasks().stream()
+//                .filter(t -> t.getId().equals(taskId))
+//                .findFirst()
+//                .orElseThrow();
 
-        Task task = subject.getTasks().stream()
-                .filter(t -> t.getId().equals(taskId))
-                .findFirst()
-                .orElseThrow();
 
-
-        solutionService.createSolution(student, subject, task, file);
+//        solutionService.createSolution(student, subject, task, file);
 
         model.addAttribute("student", student);
         return "student-subjects-page";

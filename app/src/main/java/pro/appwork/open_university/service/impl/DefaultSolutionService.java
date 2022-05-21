@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Solution;
-import pro.appwork.open_university.model.entity.Subject;
 import pro.appwork.open_university.model.entity.Task;
 import pro.appwork.open_university.repository.SolutionRepository;
 import pro.appwork.open_university.repository.UserRepository;
@@ -26,33 +25,33 @@ public class DefaultSolutionService implements SolutionService {
     @Value("${upload-file-path}")
     private String filePathUpload;
 
-    @Override
-    @Transactional
-    public void createSolution(CustomUser user, Subject subject, Task task, MultipartFile file) {
-        String fullPathUpload = filePathUpload + subject.getName() + "/" + task.getName() + "/" + file.getOriginalFilename();
-
-        Solution solution = Solution.builder()
-                .task(task)
-                .filePath(fullPathUpload)
-                .build();
-
-        user.solutions().add(solution);
-
-        try {
-            File newFile = new File(fullPathUpload).getParentFile();
-
-            if (!newFile.exists()) {
-                newFile.mkdirs();
-            }
-            FileOutputStream outputStream = new FileOutputStream(fullPathUpload);
-
-            outputStream.write(file.getBytes());
-            outputStream.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        repository.save(solution);
-        userRepository.save(user);
-    }
+//    @Override
+//    @Transactional
+//    public void createSolution(CustomUser user, Subject subject, Task task, MultipartFile file) {
+//        String fullPathUpload = filePathUpload + subject.getName() + "/" + task.getName() + "/" + file.getOriginalFilename();
+//
+//        Solution solution = Solution.builder()
+//                .task(task)
+//                .filePath(fullPathUpload)
+//                .build();
+//
+//        user.solutions().add(solution);
+//
+//        try {
+//            File newFile = new File(fullPathUpload).getParentFile();
+//
+//            if (!newFile.exists()) {
+//                newFile.mkdirs();
+//            }
+//            FileOutputStream outputStream = new FileOutputStream(fullPathUpload);
+//
+//            outputStream.write(file.getBytes());
+//            outputStream.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        repository.save(solution);
+//        userRepository.save(user);
+//    }
 }
