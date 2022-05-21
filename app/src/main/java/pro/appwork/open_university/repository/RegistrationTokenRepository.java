@@ -7,7 +7,7 @@ import pro.appwork.open_university.model.entity.RegistrationToken;
 import java.util.Optional;
 
 @Repository
-public interface EmailTokenRepository extends JpaRepository<RegistrationToken, Long> {
+public interface RegistrationTokenRepository extends JpaRepository<RegistrationToken, Long> {
     Optional<RegistrationToken> findByToken(String token);
 
     void deleteByToken(String token);

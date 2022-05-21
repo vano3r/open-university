@@ -25,5 +25,5 @@ public class CourseGroup {
     private Group group;
 
     @Column
-    private Short semester;
+    private Integer semester;
 }

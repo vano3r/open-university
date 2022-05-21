@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Table(name = "t_user")
 @Inheritance(strategy = InheritanceType.JOINED)

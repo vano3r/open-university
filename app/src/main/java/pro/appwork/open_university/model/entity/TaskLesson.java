@@ -17,6 +17,9 @@ public class TaskLesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String filePath;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Task task;
 

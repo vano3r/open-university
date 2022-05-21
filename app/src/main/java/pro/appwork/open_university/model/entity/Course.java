@@ -16,5 +16,5 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Short stage;
+    private Integer stage;
 }
