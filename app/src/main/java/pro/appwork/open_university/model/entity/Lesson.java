@@ -34,5 +34,5 @@ public class Lesson {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<TaskLesson> tasks = new ArrayList<>();
+    private List<TaskLesson> tasks;
 }

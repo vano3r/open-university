@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Приглашение</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 viewBox="0 0 24 24" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="ml-3 text-xl">ТвГТУ</span>
+        </a>
+        <nav
+                class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400 flex
+                        flex-wrap items-center text-base justify-center">
+            <a class="mr-5 hover:text-gray-900" href="#">Учебный процесс</a>
+            <a class="mr-5 hover:text-gray-900" href="#">Личный кабинет</a>
+            <a class="mr-5 hover:text-gray-900" href="#">Приглашение</a>
+            <a class="mr-5 hover:text-gray-900" href="#">Группа</a>
+        </nav>
+        <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3
+                            focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+            Выйти
+            <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                 class="w-4 h-4 ml-1">
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+        </button>
+    </div>
+</header>
+<section class="text-gray-600 body-font">
+    <form th:action="@{/registration}" method="post" th:object="${inviteDto}">
+        <div class="flex flex-col items-center container mx-auto px-5 py-24">
+            <div class="text-center w-full mb-12">
+                <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">
+                    Пригласить пользователя
+                </h1>
+            </div>
+
+            <div class="flex flex-col w-full max-w-sm space-y-6 items-center">
+
+                <div class="flex flex-col w-full">
+
+                    <label for="email" class="leading-7 text-base text-gray-600">Email</label>
+                    <input th:field="*{email}" type="email" id="email"
+                           class="bg-gray-100 bg-opacity-50 rounded border border-gray-300
+                                    focus:border-indigo-500 focus:bg-transparent focus:ring-2
+                                    focus:ring-indigo-200 text-xl outline-none text-gray-700
+                                    py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="flex flex-col w-full">
+                    <label for="role" class="leading-7 text-base text-gray-600">Роль</label>
+                    <select th:field="*{role}" id="role" class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50
+                                    border block border-gray-300 focus:border-indigo-500
+                                    focus:bg-transparent focus:ring-2 focus:ring-indigo-200
+                                    focus:outline-none rounded">
+                        <option th:each="rl: ${allRole}"
+                                th:value="${rl.name}"
+                                th:text="${rl.description}"/>
+                    </select>
+                </div>
+                <div class="flex flex-col w-full">
+                    <label for="group" class="leading-7 text-base text-gray-600">Группа</label>
+                    <select th:field="*{group}" id="group" class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50
+                                    border block border-gray-300 focus:border-indigo-500
+                                    focus:bg-transparent focus:ring-2 focus:ring-indigo-200
+                                    focus:outline-none rounded">
+                        <option th:each="gr: ${allGroup}"
+                                th:value="${gr.id}"
+                                th:text="${gr.name}"/>
+
+                    </select>
+                </div>
+                <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none
+                                hover:bg-indigo-600 rounded text-xl" type="submit">
+                    Отправить
+                </button>
+
+            </div>
+        </div>
+    </form>
+</section>
+</body>
+</html>

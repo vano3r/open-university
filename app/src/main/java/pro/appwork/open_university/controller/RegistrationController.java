@@ -2,51 +2,70 @@ package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import pro.appwork.open_university.model.dto.InviteDto;
+import pro.appwork.open_university.model.dto.RegistrationDto;
+import pro.appwork.open_university.model.entity.Group;
+import pro.appwork.open_university.model.enums.UserRole;
+import pro.appwork.open_university.service.GroupService;
+import pro.appwork.open_university.service.RegistrationService;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/registration")
 public class RegistrationController {
-//    private final RegistrationTokenRepository emailTokenService;
-//    private final UserService userService;
-//    private final GroupService groupService;
-//
-//    @GetMapping("/student/{token}")
-//    public String studentRegistrationPage(@PathVariable String token, Model model) {
-//        RegistrationToken emailToken = emailTokenService.getByToken(token);
-//
-//        StudentDto student = new StudentDto();
-//        student.setEmail(emailToken.getEmail());
-//        student.setGroup(groupService.getGroupById(emailToken.getGroup().getId()));
-//
-//        model.addAttribute("token", emailToken.getToken());
-//        model.addAttribute("student", student);
-//
-//        return "student-registration-page";
-//    }
-//
-//    @PostMapping("/student")
-//    public String studentRegistration(@ModelAttribute StudentDto student, @RequestParam("token") String token) {
-//
-////        CustomUser newUser = new CustomUser(
-////                null,
-////                student.getFirstName(),
-////                student.getLastName(),
-////                student.getMiddleName(),
-////                student.getEmail(),
-////                student.getPassword(),
-////                UserRole.STUDENT,
-////                UserState.ACTIVE,
-////                student.getGroup(),
-////                null,
-////                null
-////        );
-//
-////        userService.createNew(newUser);
-//
-//        emailTokenService.removeToken(token);
-//
-//        return "login-page";
-//    }
+    private final RegistrationService registrationService;
+    private final GroupService groupService;
+
+
+    @GetMapping
+    public String viewInvitePage(Model model) {
+        model.addAttribute("inviteDto", new InviteDto());
+
+        return "invite-page";
+    }
+
+
+    @GetMapping("/{token}")
+    public String viewRegistrationPage(@PathVariable String token, Model model) {
+        if (!registrationService.isValidToken(token)) {
+            return "redirect:/login";
+        }
+
+        model.addAllAttributes(Map.of(
+                "registrationDto", new RegistrationDto(),
+                "token", token
+        ));
+
+        return "registration-page";
+    }
+
+    @PostMapping
+    public String invite(@ModelAttribute InviteDto dto) {
+        String token = registrationService.generateToken(dto.getEmail(), dto.getRole(), dto.getGroup());
+        System.out.println(token);
+
+        return "redirect:/registration";
+    }
+
+
+    @PostMapping("/{token}")
+    public String registration(@PathVariable String token, @ModelAttribute RegistrationDto dto) {
+
+        return "redirect:/login";
+    }
+
+    @ModelAttribute("allGroup")
+    public List<Group> getAllGroup() {
+        return groupService.getAll();
+    }
+
+    @ModelAttribute("allRole")
+    public List<UserRole> getAllRole() {
+        return List.of(UserRole.STUDENT, UserRole.TEACHER);
+    }
 }

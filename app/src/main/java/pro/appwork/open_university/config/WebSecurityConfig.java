@@ -19,7 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] WHITE_LIST = {
             "/css/**",
-            "/registration/**"
+            "/registration/{token}/**"
     };
     private final UserDetailsService userDetailsService;
 
