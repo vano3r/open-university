@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -29,15 +30,17 @@
             <a class="mr-5 hover:text-gray-900" href="#">Приглашение</a>
             <a class="mr-5 hover:text-gray-900" href="#">Группа</a>
         </nav>
-        <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3
                             focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-            Выйти
-            <svg fill="none" stroke="currentColor" stroke-linecap="round"
-                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                 class="w-4 h-4 ml-1">
-                <path d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-        </button>
+                Выйти
+                <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                     class="w-4 h-4 ml-1">
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        </form>
     </div>
 </header>
 <section class="text-gray-600 body-font">
@@ -54,15 +57,15 @@
                 <div class="flex flex-col w-full">
 
                     <label for="email" class="leading-7 text-base text-gray-600">Email</label>
-                    <input th:field="*{email}" type="email" id="email"
+                    <input th:field="*{email}" type="email" id="email" required
                            class="bg-gray-100 bg-opacity-50 rounded border border-gray-300
                                     focus:border-indigo-500 focus:bg-transparent focus:ring-2
                                     focus:ring-indigo-200 text-xl outline-none text-gray-700
                                     py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 </div>
-                <div class="flex flex-col w-full">
+                <div class="flex flex-col w-full" sec:authorize="hasAuthority('ADMIN')">
                     <label for="role" class="leading-7 text-base text-gray-600">Роль</label>
-                    <select th:field="*{role}" id="role" class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50
+                    <select required onchange="displayGroup()" th:field="*{role}" id="role" class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50
                                     border block border-gray-300 focus:border-indigo-500
                                     focus:bg-transparent focus:ring-2 focus:ring-indigo-200
                                     focus:outline-none rounded">
@@ -71,12 +74,13 @@
                                 th:text="${rl.description}"/>
                     </select>
                 </div>
-                <div class="flex flex-col w-full">
+                <div class="flex flex-col w-full" id="block-group">
                     <label for="group" class="leading-7 text-base text-gray-600">Группа</label>
                     <select th:field="*{group}" id="group" class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50
                                     border block border-gray-300 focus:border-indigo-500
                                     focus:bg-transparent focus:ring-2 focus:ring-indigo-200
-                                    focus:outline-none rounded">
+                                    focus:outline-none rounded" required>
+                        <option value="" selected>Выберите группу</option>
                         <option th:each="gr: ${allGroup}"
                                 th:value="${gr.id}"
                                 th:text="${gr.name}"/>
@@ -92,5 +96,27 @@
         </div>
     </form>
 </section>
+
+<script type="text/javascript">
+    window.addEventListener("load", function () {
+        document.getElementById('group').options[0].disabled = 'true'
+    });
+
+    function displayGroup() {
+        const selectRole = document.getElementById('role').value
+        const selectGroup = document.getElementById('group')
+        const div = document.getElementById('block-group')
+
+        if (selectRole === 'TEACHER') {
+            div.style.display = 'none'
+            selectGroup.selectedIndex = 0
+            selectGroup.options[0].disabled = true
+            selectGroup.required = false
+        } else {
+            div.style.display = 'flex'
+            selectGroup.required = true
+        }
+    }
+</script>
 </body>
 </html>

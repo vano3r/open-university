@@ -1,13 +1,16 @@
 package pro.appwork.open_university.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.RegistrationToken;
 import pro.appwork.open_university.model.enums.UserRole;
 import pro.appwork.open_university.repository.RegistrationTokenRepository;
 import pro.appwork.open_university.service.MailSender;
 import pro.appwork.open_university.service.RegistrationService;
+import pro.appwork.open_university.util.EmailTemplate;
 
 import java.time.LocalDateTime;
 
@@ -17,8 +20,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final MailSender mailSender;
     private final RegistrationTokenRepository registrationTokenRepository;
 
-    @Override
-    public String generateToken(String email, UserRole role, Group group) {
+    @Value("${server.host-for-smtp}")
+    private String serverHost;
+
+    private String generateToken(String email, UserRole role, Group group) {
         RegistrationToken token = RegistrationToken.builder()
                 .email(email)
                 .role(role)
@@ -42,6 +47,19 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void sendInvite(String email, UserRole role, Group group) {
-//        mailSender.send();
+        //Дополнительная проверка, у преподователя не может быть группы
+        if (role.equals(UserRole.TEACHER)){
+            group = null;
+        }
+
+        var token = generateToken(email, role, group);
+        mailSender.send(email,
+                EmailTemplate.EMAIL_SUBJECT_INVITE,
+                EmailTemplate.EMAIL_TEXT_INVITE.formatted(serverHost, token));
+    }
+
+    @Override
+    public void registrationUser(CustomUser user) {
+
     }
 }

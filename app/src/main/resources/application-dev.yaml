@@ -34,4 +34,7 @@ spring:
           timeout: 3000
           write-timeout: 5000
 
-upload-file-path: /Users/ivan.vorobev/DevProjects/appwork/open-university/app/upload/
+
+server:
+  upload-file-path: /Users/ivan.vorobev/DevProjects/appwork/open-university/app/upload/
+  host-for-smtp: localhost:8080

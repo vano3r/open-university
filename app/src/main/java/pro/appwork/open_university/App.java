@@ -74,7 +74,17 @@ public class App {
                     .state(UserState.ACTIVE)
                     .build();
 
-            teacherRepository.save(teacher);
+            Teacher admin = Teacher.builder()
+                    .firstName("Алексей")
+                    .lastName("Громов")
+                    .middleName("Евгеньевич")
+                    .email("admin@mail.ru")
+                    .password(passwordEncoder.encode("admin"))
+                    .role(UserRole.ADMIN)
+                    .state(UserState.ACTIVE)
+                    .build();
+
+            teacherRepository.saveAll(List.of(teacher, admin));
 
             Lesson lesson1 = Lesson.builder().course(courseGroup1).name("ИАТ").teacher(teacher).build();
             Lesson lesson2 = Lesson.builder().course(courseGroup2).name("ИИС").teacher(teacher).build();

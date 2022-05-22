@@ -1,6 +1,8 @@
 package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ public class RegistrationController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
     public String viewInvitePage(Model model) {
         model.addAttribute("inviteDto", new InviteDto());
 
@@ -45,9 +48,13 @@ public class RegistrationController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
     public String invite(@ModelAttribute InviteDto dto) {
-        String token = registrationService.generateToken(dto.getEmail(), dto.getRole(), dto.getGroup());
-        System.out.println(token);
+        if (dto.getRole() == null) {
+            dto.setRole(UserRole.STUDENT);
+        }
+
+        registrationService.sendInvite(dto.getEmail(), dto.getRole(), dto.getGroup());
 
         return "redirect:/registration";
     }

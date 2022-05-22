@@ -1,19 +1,10 @@
 package pro.appwork.open_university.service;
 
+import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.enums.UserRole;
 
 public interface RegistrationService {
-    /**
-     * Метод генерации токена регистрации
-     *
-     * @param email адрес электронной почты
-     * @param role  роль пользователя
-     * @param group группа, если роль студента
-     * @return сгенерированный токен
-     */
-    String generateToken(String email, UserRole role, Group group);
-
     /**
      * Метод проверяет действительность токена регистрации
      *
@@ -22,5 +13,14 @@ public interface RegistrationService {
      */
     boolean isValidToken(String token);
 
+    /**
+     * Метод выполняет генерацию токена и отправляет приглашение на почту
+     *
+     * @param email почта для приглашения
+     * @param role  роль пользвателя
+     * @param group группа для студента
+     */
     void sendInvite(String email, UserRole role, Group group);
+
+    void registrationUser(CustomUser user);
 }
