@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import pro.appwork.open_university.model.enums.UserRole;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] WHITE_LIST = {
-            "/css/**"
+            "/css/**",
+            "/registration/{token}"
     };
     private final UserDetailsService userDetailsService;
 

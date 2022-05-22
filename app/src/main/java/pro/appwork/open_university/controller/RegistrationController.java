@@ -44,7 +44,6 @@ public class RegistrationController {
         return "redirect:/registration";
     }
 
-    @PermitAll
     @GetMapping("/{token}")
     public String viewRegistrationPage(@PathVariable String token, Model model) {
         var validToken = registrationService.getValidToken(token);
@@ -58,7 +57,6 @@ public class RegistrationController {
         return "registration-page";
     }
 
-    @PermitAll
     @PostMapping("/{token}")
     public String registration(@ModelAttribute RegistrationDto dto, @PathVariable String token) {
         var validToken = registrationService.getValidToken(token);
