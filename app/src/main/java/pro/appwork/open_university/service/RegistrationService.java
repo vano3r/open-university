@@ -1,8 +1,11 @@
 package pro.appwork.open_university.service;
 
-import pro.appwork.open_university.model.entity.CustomUser;
+import pro.appwork.open_university.model.dto.RegistrationDto;
 import pro.appwork.open_university.model.entity.Group;
+import pro.appwork.open_university.model.entity.RegistrationToken;
 import pro.appwork.open_university.model.enums.UserRole;
+
+import java.util.Optional;
 
 public interface RegistrationService {
     /**
@@ -11,7 +14,7 @@ public interface RegistrationService {
      * @param token токен регистрации
      * @return true - токен действительный, false - недействительный
      */
-    boolean isValidToken(String token);
+    Optional<RegistrationToken> getValidToken(String token);
 
     /**
      * Метод выполняет генерацию токена и отправляет приглашение на почту
@@ -22,5 +25,5 @@ public interface RegistrationService {
      */
     void sendInvite(String email, UserRole role, Group group);
 
-    void registrationUser(CustomUser user);
+    void registrationUser(RegistrationDto dto);
 }

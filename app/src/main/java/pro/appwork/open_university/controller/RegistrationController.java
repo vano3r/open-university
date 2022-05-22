@@ -2,7 +2,6 @@ package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +12,7 @@ import pro.appwork.open_university.model.enums.UserRole;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.RegistrationService;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class RegistrationController {
     private final GroupService groupService;
 
 
-    @GetMapping
+    @GetMapping()
     @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
     public String viewInvitePage(Model model) {
         model.addAttribute("inviteDto", new InviteDto());
@@ -32,36 +32,41 @@ public class RegistrationController {
         return "invite-page";
     }
 
-
-    @GetMapping("/{token}")
-    public String viewRegistrationPage(@PathVariable String token, Model model) {
-        if (!registrationService.isValidToken(token)) {
-            return "redirect:/login";
-        }
-
-        model.addAllAttributes(Map.of(
-                "registrationDto", new RegistrationDto(),
-                "token", token
-        ));
-
-        return "registration-page";
-    }
-
-    @PostMapping
+    @PostMapping()
     @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
     public String invite(@ModelAttribute InviteDto dto) {
-        if (dto.getRole() == null) {
-            dto.setRole(UserRole.STUDENT);
-        }
-
-        registrationService.sendInvite(dto.getEmail(), dto.getRole(), dto.getGroup());
+        registrationService.sendInvite(
+                dto.getEmail(),
+                dto.getRole() == null ? UserRole.STUDENT : dto.getRole(),
+                dto.getGroup()
+        );
 
         return "redirect:/registration";
     }
 
+    @PermitAll
+    @GetMapping("/{token}")
+    public String viewRegistrationPage(@PathVariable String token, Model model) {
+        var validToken = registrationService.getValidToken(token);
+        if (validToken.isEmpty()) {
+            return "redirect:/login";
+        }
 
+        model.addAttribute("registrationDto", new RegistrationDto());
+        model.addAttribute("validToken", validToken.get());
+
+        return "registration-page";
+    }
+
+    @PermitAll
     @PostMapping("/{token}")
-    public String registration(@PathVariable String token, @ModelAttribute RegistrationDto dto) {
+    public String registration(@ModelAttribute RegistrationDto dto, @PathVariable String token) {
+        var validToken = registrationService.getValidToken(token);
+        if (validToken.isEmpty()) {
+            return "redirect:/login";
+        }
+
+        registrationService.registrationUser(dto);
 
         return "redirect:/login";
     }
