@@ -6,6 +6,7 @@ import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.repository.GroupRepository;
 import pro.appwork.open_university.service.GroupService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -16,5 +17,12 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<Group> getAll() {
         return groupRepository.findAll();
+    }
+
+    @Override
+    public Group getById(Long id) {
+        return groupRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Group %d not found".formatted(id))
+        );
     }
 }
