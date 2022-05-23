@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Учебный процесс</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+<div th:insert="~{layout/navbar-layout}"></div>
 
+<section class="text-gray-600 body-font">
+    <div class="flex flex-col ml-12 mt-6">
+        <h1 th:text="${group.getName()}" class="text-2xl"></h1>
+
+        <div id="course" class="text-lg mt-6">
+            <h3 class="w-full border-b font-black">Курс 1</h3>
+
+            <div id="semester" class="pl-6">
+                <h4 class="w-full border-b font-semibold">Семестр 1</h4>
+
+                <div id="lesson" class="pl-6">
+                    <h5 class="w-full border-b font-semibold">Интеллектуальные информационные системы</h5>
+
+                    <div id="task" class="pl-6">
+                        <form action="" method="" class="flex flex-row items-center justify-between py-2 pr-12">
+                            <span>Выпускная квалификационная работа (ВКР)</span>
+                            <input type="file" class="block w-fit mx-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                            <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Загрузить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
