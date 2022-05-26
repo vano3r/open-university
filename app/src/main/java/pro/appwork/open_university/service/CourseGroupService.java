@@ -1,9 +1,8 @@
 package pro.appwork.open_university.service;
 
-import pro.appwork.open_university.model.entity.CourseGroup;
-
 import java.util.List;
+import java.util.Map;
 
 public interface CourseGroupService {
-    List<CourseGroup> getAllByGroupId(Long id);
+    Map<Integer, List<Integer>> getAllByGroupId(Long id);
 }
