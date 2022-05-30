@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "pro.appwork"
-version = "0.0.1-SNAPSHOT"
+version = System.getenv("GITHUB_RELEASE") ?: "local"
 
 repositories {
     mavenCentral()
