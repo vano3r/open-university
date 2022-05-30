@@ -43,3 +43,4 @@ jobs:
       env:
         GITHUB_ACTOR: ${{secrets.ENV_USERNAME}}
         GITHUB_TOKEN: ${{secrets.ENV_TOKEN}}
+        GITHUB_RELEASE: ${{github.ref_name}}
