@@ -1,10 +1,12 @@
 package pro.appwork.open_university.model.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 import lombok.experimental.SuperBuilder;
+import pro.appwork.open_university.model.enums.Semester;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -22,11 +24,15 @@ public class Lesson {
     @Column
     private String name;
 
-    @ManyToOne
-    private CourseGroup course;
+    @Column
+    @Enumerated
+    private Semester semester;
 
     @ManyToOne
     private Teacher teacher;
+
+    @ManyToOne
+    private Group group;
 
     @Singular
     @OneToMany(

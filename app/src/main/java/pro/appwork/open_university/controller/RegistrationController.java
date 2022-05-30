@@ -12,9 +12,7 @@ import pro.appwork.open_university.model.enums.UserRole;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.RegistrationService;
 
-import javax.annotation.security.PermitAll;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
