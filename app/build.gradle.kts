@@ -24,7 +24,7 @@ publishing {
         }
     }
     publications {
-        register<MavenPublication>("maven") {
+        register<MavenPublication>("gpr") {
             artifact("build/libs/app-$version.jar")
         }
     }
