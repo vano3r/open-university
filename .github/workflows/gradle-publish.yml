@@ -41,5 +41,5 @@ jobs:
       with:
         arguments: publish
       env:
-        USERNAME: ${{ sercets.ENV_USERNAME }}
-        TOKEN: ${{ secrets.ENV_TOKEN }}
+        GITHUB_ACTOR: ${{ sercets.ENV_USERNAME }}
+        GITHUB_TOKEN: ${{ secrets.ENV_TOKEN }}
