@@ -2,13 +2,34 @@ plugins {
     java
     id("org.springframework.boot") version "2.6.6"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("maven-publish")
 }
 
 group = "pro.appwork"
-version = "0.0.1"
+version = System.getenv("GITHUB_RELEASE") ?: "local"
 
 repositories {
     mavenCentral()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/vano3r/open-university")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            groupId = "pro.appwork"
+            artifactId = "open-university"
+            artifact("build/libs/app-$version.jar")
+        }
+    }
 }
 
 dependencies {
@@ -21,12 +42,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
-
-//    implementation("com.google.guava:guava:30.1.1-jre")
-//    implementation("org.liquibase:liquibase-core")
-//    implementation("org.mapstruct:mapstruct:1.4.2.Final")
-//    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
-//    annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
+    implementation("org.liquibase:liquibase-core")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
@@ -36,9 +52,3 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 }
-
-//kapt {
-//    arguments {
-//        arg("mapstruct.defaultComponentModel", "spring")
-//    }
-//}
