@@ -27,6 +27,12 @@
                th:href="@{/admin/groups}">
                 Редактировать группы
             </a>
+
+            <a class="mr-5 hover:text-gray-900"
+               sec:authorize="hasAuthority('ADMIN')"
+               th:href="@{/admin/tasks}">
+                Редактировать задания
+            </a>
         </nav>
         <form method="post" th:action="@{/logout}">
             <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3
