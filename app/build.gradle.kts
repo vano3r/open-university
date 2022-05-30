@@ -25,7 +25,7 @@ publishing {
     }
     publications {
         register<MavenPublication>("maven") {
-            from(components["java"])
+            artifact("build/libs/app-$version.jar")
         }
     }
 }
