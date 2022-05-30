@@ -1,4 +1,6 @@
 spring:
+  liquibase:
+    enabled: false
   security:
     user:
       name: admin@mail.ru

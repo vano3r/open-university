@@ -25,4 +25,14 @@ public class GroupServiceImpl implements GroupService {
                 () -> new EntityNotFoundException("Group %d not found".formatted(id))
         );
     }
+
+    @Override
+    public void delete(Long id) {
+        groupRepository.deleteById(id);
+    }
+
+    @Override
+    public void addGroup(Group group) {
+        groupRepository.save(group);
+    }
 }
