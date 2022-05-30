@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+
+    <title>Учебный процесс</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div th:insert="~{layout/navbar-layout}"></div>
+
+<section class="text-gray-600 body-font">
+    <div class="flex flex-col ml-12 mt-6">
+        <h1 class="text-2xl" th:text="${group.getName()}"></h1>
+
+        <div class="text-lg mt-6" id="course" th:each="course: ${courses.keySet()}">
+            <h3 class="w-full border-b font-black" th:text="${course + ' Курс'}">Курс 1</h3>
+
+            <div class="pl-6" id="semester" th:each="semester: ${courses.get(course)}">
+                <h4 class="w-full border-b font-semibold" th:text="${semester + ' Семестр'}">Семестр 1</h4>
+
+                <div class="pl-6" id="lesson">
+                    <h5 class="w-full border-b font-semibold">Интеллектуальные информационные системы</h5>
+
+                    <div class="pl-6" id="task">
+                        <form action="" class="flex flex-row items-center justify-between py-2 pr-12" method="">
+                            <span>Выпускная квалификационная работа (ВКР)</span>
+                            <input class="block w-fit mx-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                   type="file"/>
+                            <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                                    type="submit">Загрузить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

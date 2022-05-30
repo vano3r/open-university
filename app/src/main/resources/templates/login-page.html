@@ -1,29 +1,49 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Please sign in</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Авторизация</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">ТвГТУ</h2>
-        <p>
-            <label for="email" class="sr-only">Адрес эл. почты</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus>
-        </p>
-        <p>
-            <label for="password" class="sr-only">Пароль</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Пароль" required>
-        </p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+<section class="text-gray-600 body-font">
+    <form th:action="@{/login}" method="post">
+        <div class="flex flex-col items-center container mx-auto px-5 py-24">
+            <div class="text-center w-full mb-12">
+                <h1 class="text-3xl font-medium title-font text-gray-900">Авторизация</h1>
+            </div>
+            <div class="flex flex-col w-full max-w-sm space-y-6 items-center">
+                <div class="flex flex-col w-full">
+                    <label for="email" class="leading-7 text-base text-gray-600">Email</label>
+                    <input type="email" id="email" name="username" required autofocus
+                           class="bg-gray-100 bg-opacity-50 rounded border border-gray-300
+                                    focus:border-indigo-500 focus:bg-transparent focus:ring-2
+                                    focus:ring-indigo-200 text-xl outline-none text-gray-700
+                                    py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="flex flex-col w-full">
+                    <label for="password" class="leading-7 text-base text-gray-600">Пароль</label>
+                    <input type="password" id="password" name="password" required
+                           class="bg-gray-100 bg-opacity-50 rounded border border-gray-300
+                                    focus:border-indigo-500 focus:bg-transparent focus:ring-2
+                                    focus:ring-indigo-200 text-xl outline-none text-gray-700
+                                    py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div th:if="${param.error}" class="text-red-600">
+                    <p>Введен неверный логин или пароль</p>
+                </div>
+                <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none
+                                hover:bg-indigo-600 rounded text-xl">
+                    Войти
+                </button>
+            </div>
+        </div>
     </form>
-</div>
+</section>
 </body>
 </html>

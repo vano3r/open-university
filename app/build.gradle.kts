@@ -20,9 +20,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-//    implementation("org.liquibase:liquibase-core")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
-    implementation("com.google.guava:guava:30.1.1-jre")
+
+//    implementation("com.google.guava:guava:30.1.1-jre")
+//    implementation("org.liquibase:liquibase-core")
+//    implementation("org.mapstruct:mapstruct:1.4.2.Final")
+//    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+//    annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
@@ -32,3 +36,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 }
+
+//kapt {
+//    arguments {
+//        arg("mapstruct.defaultComponentModel", "spring")
+//    }
+//}
