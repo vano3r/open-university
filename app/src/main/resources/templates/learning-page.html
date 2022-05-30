@@ -14,7 +14,7 @@
 <body>
 <div th:insert="~{layout/navbar-layout}"></div>
 
-<section class="container mx-auto w-3/4">
+<section class="container mx-auto w-3/4 text-gray-800">
     <div class="flex flex-col py-24">
         <div class="text-center w-full mb-12">
             <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">
@@ -35,157 +35,57 @@
                     <h3>Теория принятия решения</h3>
                 </div>
 
-                <div class="ml-24 mt-2 text-lg">
-                    <ul>
-                        <li class="flex items-center p-2 justify-between">
-                            Выпускная квалификационная работа (ВКР)
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                        <li class="flex items-center p-2 justify-between">
-                            Курсовая работа
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                        <li class="flex items-center p-2 justify-between">
-                            Лабораторная работа №1
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="ml-24 mt-2 text-lg">
+                    <li class="flex p-2 pr-8 justify-between hover:text-black">
+                        <a href="#">Выпускная квалификационная работа (ВКР)</a>
+                        <form class="flex items-center">
+                            <button>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </form>
+                    </li>
+                    <li class="p-2 pr-8">
+                        <form>
+                            <button class="flex items-center text-indigo-500 hover:text-indigo-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="ml-2">Добавить работу</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
 
             <div class="flex flex-col w-full">
-                <div class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                    </svg>
-                    <h3>Дискретная математика</h3>
-                </div>
+                <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
+                    <button class="flex items-center text-indigo-500 hover:text-indigo-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="ml-2">Добавить предмет</span>
+                    </button>
+                </form>
 
-                <div class="ml-24 mt-2 text-lg">
-                    <ul>
-                        <li class="flex items-center p-2 justify-between">
-                            Диплом
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                        <li class="flex items-center p-2 justify-between">
-                            Курсач
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                        <li class="flex items-center p-2 justify-between">
-                            Лабораторная работа №55
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex flex-col w-full pb-8">
-            <h2 class="text-xl font-bold py-2 bg-indigo-500 text-white text-center">Второй семестр</h2>
-
-            <div class="flex flex-col w-full">
-                <div class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                    </svg>
-                    <h3>Интеллектуальные информационные системы</h3>
-                </div>
-
-                <div class="ml-24 mt-2 text-lg">
-                    <ul>
-                        <li class="flex items-center p-2 justify-between">
-                            Тестирование
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                        <li class="flex items-center p-2 justify-between">
-                            Самостоятельная работа
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                        <li class="flex items-center p-2 justify-between">
-                            Контрольная работа
-                            <form>
-                                <label class="block">
-                                    <span class="sr-only">Choose File</span>
-                                    <input type="file"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                                                    file:rounded-full file:border-0 file:text-sm file:font-semibold
-                                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-                                </label>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="ml-24 mt-2 text-lg">
+                    <li class="p-2 pr-8">
+                        <form>
+                            <button class="flex items-center text-indigo-500 hover:text-indigo-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="ml-2">Добавить работу</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </section>
+
+<!--<div th:insert="~{modal/add-lesson-modal.html}"></div>-->
 </body>
 </html>
