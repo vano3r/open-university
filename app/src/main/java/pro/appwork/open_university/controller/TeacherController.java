@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.LessonService;
 
@@ -21,25 +22,14 @@ public class TeacherController {
     @GetMapping("/groups")
     public String viewGroupsPage(Model model) {
         model.addAttribute("groups", groupService.getAll());
-
-        return "groups-page";
+        return "learning-groups-page";
     }
 
     @GetMapping("/groups/{id}")
     public String viewGroupPage(@PathVariable Long id, Model model) {
-
-//        List<CourseGroup> courseGroupList = courseGroupService.getAllByGroupId(id);
-//        Map<Integer, List<Integer>> listMap = courseGroupService.getAllByGroupId(id);
-//
-//        listMap.keySet().forEach(
-//                s -> listMap.get(s).forEach(System.out::println)
-//        );
-//        List<Lesson> lessons = lessonService.getAllByCourseGroupId(id);
-
-//        model.addAttribute("courses", listMap);
-//        model.addAttribute("lessons", lessons);
-        model.addAttribute("group", groupService.getById(id));
-
-        return "group-page";
+        Group group = groupService.getById(id);
+        model.addAttribute("group", group);
+        model.addAttribute("lessons", lessonService.getAllMapBySemester(group));
+        return "learning-page";
     }
 }
