@@ -12,21 +12,12 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "t_solution")
-public class Solution {
+@Table(name = "t_task_type")
+public class TaskType {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column
-    private String filePath;
-
-    @Column
-    private Integer version;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Task task;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Student student;
+    private String name;
 }

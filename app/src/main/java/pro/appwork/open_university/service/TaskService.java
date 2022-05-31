@@ -1,13 +1,13 @@
 package pro.appwork.open_university.service;
 
-import pro.appwork.open_university.model.entity.Task;
+import pro.appwork.open_university.model.entity.TaskType;
 
 import java.util.List;
 
 public interface TaskService {
-    List<Task> getAll();
+    List<TaskType> getAll();
 
-    void addTask(Task task);
+    void addTask(TaskType taskType);
 
     void delete(Long id);
 }

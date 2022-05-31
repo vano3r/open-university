@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pro.appwork.open_university.model.entity.Group;
-import pro.appwork.open_university.model.entity.Task;
+import pro.appwork.open_university.model.entity.TaskType;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.TaskService;
 
@@ -45,8 +45,8 @@ public class AdminController {
 
     @PostMapping("/tasks/add")
     public String createNewTask(@RequestParam String name) {
-        Task task = Task.builder().name(name).build();
-        taskService.addTask(task);
+        TaskType taskType = TaskType.builder().name(name).build();
+        taskService.addTask(taskType);
         return "redirect:/admin/tasks";
     }
 

@@ -25,7 +25,7 @@
             <div class="pl-6" id="lesson" th:each="lesson: ${mapLesson.get(semester)}">
                 <h5 class="w-full border-b font-semibold" th:text="${lesson.name}"></h5>
 
-                <div class="pl-6" id="task">
+                <div class="pl-6" id="taskType">
                     <form action="" class="flex flex-row items-center justify-between py-2 pr-12" method="">
                         <span>Выпускная квалификационная работа (ВКР)</span>
                         <input class="block w-fit mx-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"

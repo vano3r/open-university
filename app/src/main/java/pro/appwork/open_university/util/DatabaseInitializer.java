@@ -66,21 +66,21 @@ public class DatabaseInitializer implements ApplicationRunner {
         lessonRepository.saveAll(List.of(lesson1, lesson2, lesson3));
 
 
-        Task task1 = Task.builder().name("ВКР").build();
-        Task task2 = Task.builder().name("Лабораторная работа").build();
-        Task task3 = Task.builder().name("КР").build();
+        TaskType type1 = TaskType.builder().name("ВКР").build();
+        TaskType type2 = TaskType.builder().name("Лабораторная работа").build();
+        TaskType type3 = TaskType.builder().name("КР").build();
 
-        taskRepository.saveAll(List.of(task1, task2, task3));
+        taskRepository.saveAll(List.of(type1, type2, type3));
 
-        TaskLesson taskLesson1 = TaskLesson.builder().task(task1).lesson(lesson1).filePath("file").build();
-        TaskLesson taskLesson2 = TaskLesson.builder().task(task2).lesson(lesson1).filePath("file").build();
-        TaskLesson taskLesson3 = TaskLesson.builder().task(task3).lesson(lesson1).filePath("file").build();
-        TaskLesson taskLesson4 = TaskLesson.builder().task(task2).lesson(lesson2).filePath("file").build();
-        TaskLesson taskLesson5 = TaskLesson.builder().task(task3).lesson(lesson3).filePath("file").build();
-        TaskLesson taskLesson6 = TaskLesson.builder().task(task2).lesson(lesson3).filePath("file").build();
+        Task task1 = Task.builder().type(type1).lesson(lesson1).filePath("file").build();
+        Task task2 = Task.builder().type(type2).lesson(lesson1).filePath("file").build();
+        Task task3 = Task.builder().type(type3).lesson(lesson1).filePath("file").build();
+        Task task4 = Task.builder().type(type2).lesson(lesson2).filePath("file").build();
+        Task task5 = Task.builder().type(type3).lesson(lesson3).filePath("file").build();
+        Task task6 = Task.builder().type(type2).lesson(lesson3).filePath("file").build();
 
         taskLessonRepository.saveAll(
-                List.of(taskLesson1, taskLesson2, taskLesson3, taskLesson4, taskLesson5, taskLesson6)
+                List.of(task1, task2, task3, task4, task5, task6)
         );
 
         Student student1 = Student.builder()
@@ -118,11 +118,11 @@ public class DatabaseInitializer implements ApplicationRunner {
         studentRepository.saveAll(List.of(student1, student2, student3));
 
 
-        Solution solution1 = Solution.builder().task(taskLesson1).student(student1).filePath("file").version(1).build();
-        Solution solution2 = Solution.builder().task(taskLesson2).student(student1).filePath("file").version(1).build();
-        Solution solution3 = Solution.builder().task(taskLesson3).student(student2).filePath("file").version(1).build();
-        Solution solution4 = Solution.builder().task(taskLesson3).student(student3).filePath("file").version(1).build();
-        Solution solution5 = Solution.builder().task(taskLesson3).student(student3).filePath("file").version(2).build();
+        Solution solution1 = Solution.builder().task(task1).student(student1).filePath("file").version(1).build();
+        Solution solution2 = Solution.builder().task(task2).student(student1).filePath("file").version(1).build();
+        Solution solution3 = Solution.builder().task(task3).student(student2).filePath("file").version(1).build();
+        Solution solution4 = Solution.builder().task(task3).student(student3).filePath("file").version(1).build();
+        Solution solution5 = Solution.builder().task(task3).student(student3).filePath("file").version(2).build();
 
         solutionRepository.saveAll(List.of(solution1, solution2, solution3, solution4, solution5));
 

@@ -13,9 +13,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
-@SuperBuilder
 @NoArgsConstructor
 @Table(name = "t_lesson")
+@SuperBuilder(toBuilder = true)
 public class Lesson {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -35,10 +35,7 @@ public class Lesson {
     private Group group;
 
     @Singular
-    @OneToMany(
-            mappedBy = "task",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<TaskLesson> tasks;
+    @OneToMany
+    @JoinColumn(name = "lesson_id")
+    private List<Task> tasks;
 }

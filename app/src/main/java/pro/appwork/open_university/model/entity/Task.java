@@ -1,14 +1,10 @@
 package pro.appwork.open_university.model.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
@@ -16,10 +12,18 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Table(name = "t_task")
 public class Task {
+
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String name;
+    private String filePath;
+
+    @ManyToOne
+    private TaskType type;
+
+    @ManyToOne
+    private Lesson lesson;
 }
