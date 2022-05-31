@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru"
       xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -19,11 +20,14 @@
     <div class="flex flex-col items-center py-24">
         <div class="text-center w-full mb-12">
             <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">
-                Редактирование групп
+                Группы
             </h1>
         </div>
 
-        <form class="flex w-full justify-center" method="post" th:action="@{/groups/create}">
+        <form class="flex w-full justify-center" method="post"
+              sec:authorize="hasAuthority('ADMIN')"
+              th:action="@{/groups/create}">
+
             <div class="flex flex-col">
                 <label for="group-input" class="leading-7 text-base text-gray-600">Введите название группы</label>
                 <input id="group-input" type="text" name="name"
@@ -46,9 +50,12 @@
                 <li th:each="group : ${groupList}"
                     class="flex justify-between p-3 hover:bg-indigo-500 hover:text-white">
 
-                    [[${group.name}]]
+                    <a th:href="@{/groups/{id}(id = ${group.id})}" th:text="${group.name}"></a>
 
-                    <form method="post" th:action="@{/groups/delete/{id} (id = ${group.id})}">
+                    <form method="post"
+                          sec:authorize="hasAuthority('ADMIN')"
+                          th:action="@{/groups/delete/{id} (id = ${group.id})}">
+
                         <button type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor" stroke-width="2">

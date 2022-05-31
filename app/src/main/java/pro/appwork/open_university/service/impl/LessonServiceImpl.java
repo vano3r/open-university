@@ -58,23 +58,37 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public Map<Semester, List<Lesson>> getAllMapBySemester(Group group, Teacher teacher) {
-        return lessonRepository.findAllByGroupAndTeacher(group, teacher)
-                .stream()
-                .collect(Collectors.groupingBy(Lesson::getSemester))
-                .entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        return createMapBySemester(
+                lessonRepository.findAllByGroupAndTeacher(group, teacher),
+                group
+        );
     }
 
     @Override
     public Map<Semester, List<Lesson>> getAllMapBySemester(Group group) {
-        return lessonRepository.findAllByGroup(group)
-                .stream()
+        return createMapBySemester(
+                lessonRepository.findAllByGroup(group),
+                group
+        );
+    }
+
+    private Map<Semester, List<Lesson>> createMapBySemester(List<Lesson> list, Group group) {
+        var map = list.stream()
                 .collect(Collectors.groupingBy(Lesson::getSemester))
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+
+        if (!map.containsKey(group.getActualSemester())) {
+            map.put(group.getActualSemester(), List.of());
+        }
+
+        return map;
     }
 }

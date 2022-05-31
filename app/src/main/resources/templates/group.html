@@ -18,15 +18,16 @@
     <div class="flex flex-col py-24">
         <div class="text-center w-full mb-12">
             <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">
-                Учебный прцесс
+                <!--                TODO Возможно нужно другое название-->
+                Учебный процесс
             </h1>
         </div>
 
-        <div class="flex flex-col w-full pb-8" th:each="semester: ${lessons.keySet()}">
+        <div class="flex flex-col w-full pb-8" th:each="semester: ${lessonMap.keySet()}">
             <h2 class="text-xl font-bold py-2 bg-indigo-500 text-white text-center" th:text="${semester.description}">
                 Первый семестр</h2>
 
-            <div class="flex flex-col w-full" th:each="lesson : ${lessons.get(semester)}">
+            <div class="flex flex-col w-full" th:each="lesson : ${lessonMap.get(semester)}">
                 <div class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -40,10 +41,10 @@
                 </div>
 
                 <ul class="ml-24 mt-2 text-lg">
-                    <li class="flex p-2 pr-8 justify-between hover:text-black" th:each="taskLesson: ${lesson.tasks}">
-                        <a href="#" th:text="${taskLesson.taskType.name}">Выпускная квалификационная работа (ВКР)</a>
+                    <li class="flex p-2 pr-8 justify-between hover:text-black" th:each="task: ${lesson.tasks}">
+                        <a href="#" th:text="${task.type.name}">Выпускная квалификационная работа (ВКР)</a>
                         <form class="flex items-center" method="post"
-                              th:action="@{/lessons/delete/{id} (id= ${taskLesson.lesson.id})}">
+                              th:action="@{/lessons/delete/{id} (id= ${task.lesson.id})}">
                             <button>
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
                                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
