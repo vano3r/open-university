@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/taskLessons")
-public class TaskLessonController {
+@RequestMapping("/tasks")
+public class TaskController {
 //    private final TaskLessonS
 }

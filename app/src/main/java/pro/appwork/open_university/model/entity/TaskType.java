@@ -10,9 +10,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
-@SuperBuilder
 @NoArgsConstructor
 @Table(name = "t_task_type")
+@SuperBuilder(toBuilder = true)
 public class TaskType {
     @Id
     @GeneratedValue(strategy = IDENTITY)

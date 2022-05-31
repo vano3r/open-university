@@ -25,8 +25,8 @@ public class DatabaseInitializer implements ApplicationRunner {
     private final GroupRepository groupRepository;
     private final TeacherRepository teacherRepository;
     private final LessonRepository lessonRepository;
+    private final TaskTypeRepository taskTypeRepository;
     private final TaskRepository taskRepository;
-    private final TaskLessonRepository taskLessonRepository;
     private final SolutionRepository solutionRepository;
 
     @Override
@@ -70,7 +70,7 @@ public class DatabaseInitializer implements ApplicationRunner {
         TaskType type2 = TaskType.builder().name("Лабораторная работа").build();
         TaskType type3 = TaskType.builder().name("КР").build();
 
-        taskRepository.saveAll(List.of(type1, type2, type3));
+        taskTypeRepository.saveAll(List.of(type1, type2, type3));
 
         Task task1 = Task.builder().type(type1).lesson(lesson1).filePath("file").build();
         Task task2 = Task.builder().type(type2).lesson(lesson1).filePath("file").build();
@@ -79,7 +79,7 @@ public class DatabaseInitializer implements ApplicationRunner {
         Task task5 = Task.builder().type(type3).lesson(lesson3).filePath("file").build();
         Task task6 = Task.builder().type(type2).lesson(lesson3).filePath("file").build();
 
-        taskLessonRepository.saveAll(
+        taskRepository.saveAll(
                 List.of(task1, task2, task3, task4, task5, task6)
         );
 

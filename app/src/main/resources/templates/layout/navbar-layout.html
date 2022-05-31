@@ -24,14 +24,14 @@
 
             <a class="mr-5 hover:text-gray-900"
                sec:authorize="hasAuthority('ADMIN')"
-               th:href="@{/admin/groups}">
-                Редактировать группы
+               th:href="@{/groups}">
+                Группы
             </a>
 
             <a class="mr-5 hover:text-gray-900"
                sec:authorize="hasAuthority('ADMIN')"
-               th:href="@{/admin/tasks}">
-                Редактировать задания
+               th:href="@{/taskTypes}">
+                Типы заданий
             </a>
         </nav>
         <form method="post" th:action="@{/logout}">
