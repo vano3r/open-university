@@ -9,7 +9,7 @@ import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.RegistrationToken;
 import pro.appwork.open_university.model.entity.Student;
 import pro.appwork.open_university.model.entity.Teacher;
-import pro.appwork.open_university.model.enums.UserRole;
+import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.model.enums.UserState;
 import pro.appwork.open_university.repository.RegistrationTokenRepository;
 import pro.appwork.open_university.repository.StudentRepository;
@@ -34,7 +34,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Value("${server.host-for-smtp}")
     private String serverHost;
 
-    private String generateToken(String email, UserRole role, Group group) {
+    private String generateToken(String email, RoleEnum role, Group group) {
         RegistrationToken token = RegistrationToken.builder()
                 .email(email)
                 .role(role)
@@ -60,9 +60,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public void sendInvite(String email, UserRole role, Group group) {
+    public void sendInvite(String email, RoleEnum role, Group group) {
         //Дополнительная проверка, у преподователя не может быть группы
-        if (role.equals(UserRole.TEACHER)) {
+        if (role.equals(RoleEnum.TEACHER)) {
             group = null;
         }
 
@@ -75,12 +75,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void registrationUser(RegistrationDto dto) {
-        if (dto.getRole().equals(UserRole.STUDENT)) {
+        if (dto.getRole().equals(RoleEnum.STUDENT)) {
             Student student = Student.builder()
                     .email(dto.getEmail())
                     .password(passwordEncoder.encode(dto.getPassword()))
                     .group(dto.getGroup())
-                    .role(dto.getRole())
+//                    .role(dto.getRole())
                     .state(UserState.ACTIVE)
                     .firstName(dto.getFirstName())
                     .lastName(dto.getLastName())
@@ -92,7 +92,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             Teacher teacher = Teacher.builder()
                     .email(dto.getEmail())
                     .password(passwordEncoder.encode(dto.getPassword()))
-                    .role(dto.getRole())
+//                    .role(dto.getRole())
                     .state(UserState.ACTIVE)
                     .firstName(dto.getFirstName())
                     .lastName(dto.getLastName())

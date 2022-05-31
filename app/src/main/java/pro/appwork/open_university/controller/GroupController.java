@@ -1,7 +1,6 @@
 package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,33 +9,35 @@ import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.Student;
 import pro.appwork.open_university.model.entity.Teacher;
-import pro.appwork.open_university.model.enums.UserRole;
+import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.security.CustomUserDetails;
+import pro.appwork.open_university.security.annotation.IsAdmin;
+import pro.appwork.open_university.security.annotation.IsAny;
+import pro.appwork.open_university.security.annotation.IsTeacher;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.LessonService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
+@IsAdmin
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/groups")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class GroupController {
     private final GroupService groupService;
     private final LessonService lessonService;
 
+    @IsTeacher
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('TEACHER', 'ADMIN')")
     public String getAll(Model model) {
         model.addAttribute("groupList", groupService.getAll());
 
         return "group-list";
-
     }
 
+    @IsAny
     @GetMapping("/{id}")
-    @PreAuthorize("permitAll()")
     public String getById(Model model,
                           Authentication authentication,
                           @PathVariable Long id) {
@@ -59,7 +60,7 @@ public class GroupController {
         Group group = groupService.getById(id);
         model.addAttribute("group", group);
 
-        if (teacher.getRole().equals(UserRole.ADMIN)) {
+        if (teacher.rolesContains(RoleEnum.ADMIN)) {
             model.addAttribute("lessonMap", lessonService.getAllMapBySemester(group));
             return "group";
         }

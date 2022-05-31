@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pro.appwork.open_university.model.entity.*;
+import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.model.enums.Semester;
-import pro.appwork.open_university.model.enums.UserRole;
 import pro.appwork.open_university.model.enums.UserState;
 import pro.appwork.open_university.repository.*;
 
@@ -28,6 +28,7 @@ public class DatabaseInitializer implements ApplicationRunner {
     private final TaskTypeRepository taskTypeRepository;
     private final TaskRepository taskRepository;
     private final SolutionRepository solutionRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -37,13 +38,19 @@ public class DatabaseInitializer implements ApplicationRunner {
 
         groupRepository.saveAll(List.of(group1, group2));
 
+        Role studentRole = Role.builder().name(RoleEnum.STUDENT).build();
+        Role teacherRole = Role.builder().name(RoleEnum.TEACHER).build();
+        Role adminRole = Role.builder().name(RoleEnum.ADMIN).build();
+
+        roleRepository.saveAll(List.of(studentRole, teacherRole, adminRole));
+
         Teacher teacher = Teacher.builder()
                 .firstName("Сергей")
                 .lastName("Кузнецов")
                 .middleName("Евгеньевич")
                 .email("teacher@mail.ru")
                 .password(passwordEncoder.encode("teacher"))
-                .role(UserRole.TEACHER)
+                .role(teacherRole)
                 .state(UserState.ACTIVE)
                 .build();
 
@@ -53,7 +60,8 @@ public class DatabaseInitializer implements ApplicationRunner {
                 .middleName("Евгеньевич")
                 .email("admin@mail.ru")
                 .password(passwordEncoder.encode("admin"))
-                .role(UserRole.ADMIN)
+                .role(teacherRole)
+                .role(adminRole)
                 .state(UserState.ACTIVE)
                 .build();
 
@@ -90,7 +98,7 @@ public class DatabaseInitializer implements ApplicationRunner {
                 .email("student1@mail.ru")
                 .group(group1)
                 .password(passwordEncoder.encode("student"))
-                .role(UserRole.STUDENT)
+                .role(studentRole)
                 .state(UserState.ACTIVE)
                 .build();
 
@@ -100,7 +108,7 @@ public class DatabaseInitializer implements ApplicationRunner {
                 .email("student2@mail.ru")
                 .group(group1)
                 .password(passwordEncoder.encode("student"))
-                .role(UserRole.STUDENT)
+                .role(studentRole)
                 .state(UserState.ACTIVE)
                 .build();
 
@@ -111,7 +119,7 @@ public class DatabaseInitializer implements ApplicationRunner {
                 .email("student3@mail.ru")
                 .group(group2)
                 .password(passwordEncoder.encode("student"))
-                .role(UserRole.STUDENT)
+                .role(studentRole)
                 .state(UserState.ACTIVE)
                 .build();
 

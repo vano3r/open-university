@@ -1,7 +1,6 @@
 package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,15 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.security.CustomUserDetails;
+import pro.appwork.open_university.security.annotation.IsTeacher;
 import pro.appwork.open_university.service.LessonService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
+@IsTeacher
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/lessons")
-@PreAuthorize("hasAuthority('TEACHER')")
 public class LessonController {
     private final LessonService lessonService;
 

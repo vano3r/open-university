@@ -1,19 +1,19 @@
 package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pro.appwork.open_university.security.annotation.IsAdmin;
 import pro.appwork.open_university.service.TaskTypeService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
+@IsAdmin
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/taskTypes")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class TaskTypeController {
 
     private final TaskTypeService typeService;

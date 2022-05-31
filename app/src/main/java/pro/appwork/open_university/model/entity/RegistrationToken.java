@@ -1,8 +1,10 @@
 package pro.appwork.open_university.model.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import pro.appwork.open_university.model.enums.UserRole;
+import pro.appwork.open_university.model.enums.RoleEnum;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,7 +35,7 @@ public class RegistrationToken {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private RoleEnum role;
 
     @Column
     @Builder.Default
