@@ -5,13 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pro.appwork.open_university.model.dto.RegistrationDto;
-import pro.appwork.open_university.model.entity.Group;
-import pro.appwork.open_university.model.entity.RegistrationToken;
-import pro.appwork.open_university.model.entity.Student;
-import pro.appwork.open_university.model.entity.Teacher;
+import pro.appwork.open_university.model.entity.*;
 import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.model.enums.UserState;
 import pro.appwork.open_university.repository.RegistrationTokenRepository;
+import pro.appwork.open_university.repository.RoleRepository;
 import pro.appwork.open_university.repository.StudentRepository;
 import pro.appwork.open_university.repository.TeacherRepository;
 import pro.appwork.open_university.service.MailSender;
@@ -30,11 +28,15 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
-    @Value("${server.host-for-smtp}")
+    //TODO Сделать получение хоста
+    @Value("localhost:8080")
     private String serverHost;
 
-    private String generateToken(String email, RoleEnum role, Group group) {
+    private String generateToken(String email, RoleEnum roleEnum, Group group) {
+        Role role = roleRepository.findByName(roleEnum).orElseThrow(EntityNotFoundException::new);
+
         RegistrationToken token = RegistrationToken.builder()
                 .email(email)
                 .role(role)
@@ -75,12 +77,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void registrationUser(RegistrationDto dto) {
-        if (dto.getRole().equals(RoleEnum.STUDENT)) {
+        if (dto.getRole().getName().equals(RoleEnum.STUDENT)) {
             Student student = Student.builder()
                     .email(dto.getEmail())
                     .password(passwordEncoder.encode(dto.getPassword()))
                     .group(dto.getGroup())
-//                    .role(dto.getRole())
+                    .role(dto.getRole())
                     .state(UserState.ACTIVE)
                     .firstName(dto.getFirstName())
                     .lastName(dto.getLastName())
@@ -92,7 +94,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             Teacher teacher = Teacher.builder()
                     .email(dto.getEmail())
                     .password(passwordEncoder.encode(dto.getPassword()))
-//                    .role(dto.getRole())
+                    .role(dto.getRole())
                     .state(UserState.ACTIVE)
                     .firstName(dto.getFirstName())
                     .lastName(dto.getLastName())

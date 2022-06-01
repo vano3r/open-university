@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import pro.appwork.open_university.model.enums.RoleEnum;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,9 +32,9 @@ public class RegistrationToken {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @Column
     @Builder.Default

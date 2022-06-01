@@ -2,7 +2,7 @@ package pro.appwork.open_university.model.dto;
 
 import lombok.Data;
 import pro.appwork.open_university.model.entity.Group;
-import pro.appwork.open_university.model.enums.RoleEnum;
+import pro.appwork.open_university.model.entity.Role;
 
 @Data
 public class RegistrationDto {
@@ -10,7 +10,7 @@ public class RegistrationDto {
     private String lastName;
     private String middleName;
     private String email;
-    private RoleEnum role;
+    private Role role;
     private Group group;
     private String password;
     private String repeatPassword;
