@@ -23,7 +23,7 @@
             </h1>
         </div>
 
-        <form class="flex w-full justify-center" method="post" th:action="@{/admin/tasks/add}">
+        <form class="flex w-full justify-center" method="post" th:action="@{/taskTypes/create}">
             <div class="flex flex-col">
                 <label class="leading-7 text-base text-gray-600" for="group-input">Введите название группы</label>
                 <input class="bg-gray-100 h-11 bg-opacity-50 rounded border border-gray-300
@@ -44,11 +44,11 @@
         <div class="w-3/4 mt-20">
             <ul>
                 <li class="flex justify-between p-3 hover:bg-indigo-500 hover:text-white"
-                    th:each="task : ${tasks}">
+                    th:each="type : ${typeList}">
 
-                    [[${task.name}]]
+                    [[${type.name}]]
 
-                    <form method="post" th:action="@{/admin/tasks/delete/{id} (id = ${task.id})}">
+                    <form method="post" th:action="@{/taskTypes/delete/{id} (id = ${type.id})}">
                         <button type="submit">
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                                  xmlns="http://www.w3.org/2000/svg">

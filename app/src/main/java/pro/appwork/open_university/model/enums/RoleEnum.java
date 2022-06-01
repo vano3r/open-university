@@ -1,13 +1,13 @@
 package pro.appwork.open_university.model.enums;
 
-public enum UserRole {
+public enum RoleEnum {
     STUDENT("Студент"),
     TEACHER("Преподаватель"),
     ADMIN("Администратор");
 
     private final String description;
 
-    UserRole(String description) {
+    RoleEnum(String description) {
         this.description = description;
     }
 

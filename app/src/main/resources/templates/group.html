@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Учебный процесс</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div th:insert="~{layout/navbar-layout}"></div>
+
+<section class="container mx-auto w-3/4 text-gray-800">
+    <div class="flex flex-col py-24">
+        <div class="text-center w-full mb-12">
+            <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">
+                <!--                TODO Возможно нужно другое название-->
+                Учебный процесс
+            </h1>
+        </div>
+
+        <div class="flex flex-col w-full pb-8" th:each="semester: ${lessonMap.keySet()}">
+            <h2 class="text-xl font-bold py-2 bg-indigo-500 text-white text-center" th:text="${semester.description}">
+                Первый семестр</h2>
+
+            <div class="flex flex-col w-full" th:each="lesson : ${lessonMap.get(semester)}">
+                <div class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                        <path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                    <h3 th:text="${lesson.name}">Теория принятия решения</h3>
+                </div>
+
+                <ul class="ml-24 mt-2 text-lg">
+                    <li class="flex p-2 pr-8 justify-between hover:text-black" th:each="task: ${lesson.tasks}">
+                        <a href="#" th:text="${task.type.name}">Выпускная квалификационная работа (ВКР)</a>
+                        <form class="flex items-center" method="post"
+                              th:action="@{/lessons/delete/{id} (id= ${task.lesson.id})}">
+                            <button>
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </li>
+                    <li class="p-2 pr-8">
+                        <form>
+                            <button class="flex items-center text-indigo-500 hover:text-indigo-600">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                                <span class="ml-2">Добавить работу</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col w-full">
+                <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
+                    <button class="flex items-center text-indigo-500 hover:text-indigo-600">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                        <span class="ml-2">Добавить предмет</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--<div th:insert="~{modal/add-lesson-modal.html}"></div>-->
+</body>
+</html>

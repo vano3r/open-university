@@ -1,14 +1,14 @@
 package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pro.appwork.open_university.model.dto.InviteDto;
 import pro.appwork.open_university.model.dto.RegistrationDto;
 import pro.appwork.open_university.model.entity.Group;
-import pro.appwork.open_university.model.enums.UserRole;
+import pro.appwork.open_university.model.enums.RoleEnum;
+import pro.appwork.open_university.security.annotation.IsTeacher;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.RegistrationService;
 
@@ -22,20 +22,20 @@ public class RegistrationController {
     private final GroupService groupService;
 
 
-    @GetMapping()
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
+    @IsTeacher
+    @GetMapping
     public String viewInvitePage(Model model) {
         model.addAttribute("inviteDto", new InviteDto());
 
         return "invite-page";
     }
 
-    @PostMapping()
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'TEACHER')")
+    @IsTeacher
+    @PostMapping
     public String invite(@ModelAttribute InviteDto dto) {
         registrationService.sendInvite(
                 dto.getEmail(),
-                dto.getRole() == null ? UserRole.STUDENT : dto.getRole(),
+                dto.getRole() == null ? RoleEnum.STUDENT : dto.getRole(),
                 dto.getGroup()
         );
 
@@ -73,7 +73,7 @@ public class RegistrationController {
     }
 
     @ModelAttribute("allRole")
-    public List<UserRole> getAllRole() {
-        return List.of(UserRole.STUDENT, UserRole.TEACHER);
+    public List<RoleEnum> getAllRole() {
+        return List.of(RoleEnum.STUDENT, RoleEnum.TEACHER);
     }
 }
