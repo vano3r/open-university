@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Table(name = "t_task")
 public class Task {
