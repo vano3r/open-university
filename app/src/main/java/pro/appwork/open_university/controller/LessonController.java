@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pro.appwork.open_university.model.entity.Teacher;
+import pro.appwork.open_university.model.enums.Semester;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsTeacher;
 import pro.appwork.open_university.service.LessonService;
@@ -25,13 +26,15 @@ public class LessonController {
     @PostMapping("/create")
     public String create(HttpServletRequest request,
                          Authentication authentication,
-                         @RequestParam String name) {
+                         @RequestParam String lessonName,
+                         @RequestParam Semester semester,
+                         @RequestParam Long groupId) {
 
         String referer = Optional.of(request.getHeader("Referer"))
                 .orElse("/");
         Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
 
-        lessonService.createByName(name, teacher);
+        lessonService.create(teacher, groupId, semester, lessonName);
 
         return "redirect:" + referer;
     }

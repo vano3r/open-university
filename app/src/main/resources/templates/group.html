@@ -43,18 +43,23 @@
                 <ul class="ml-24 mt-2 text-lg">
                     <li class="flex p-2 pr-8 justify-between hover:text-black" th:each="task: ${lesson.tasks}">
                         <a href="#" th:text="${task.type.name}">Выпускная квалификационная работа (ВКР)</a>
-                        <form class="flex items-center" method="post"
-                              th:action="@{/lessons/delete/{id} (id= ${task.lesson.id})}">
-                            <button>
-                                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
+                        <form class="flex items-center" enctype="multipart/form-data" method="post"
+                              th:action="@{/tasks/uploadFile}">
+                            <input name="taskId" th:value="${task.id}" type="hidden">
+                            <input name="file" type="file">
+                            <button type="submit" value="Загрузить задание">Загрузить задание</button>
                         </form>
                     </li>
                     <li class="p-2 pr-8">
-                        <form>
+                        <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b"
+                              method="post"
+                              th:action="@{/tasks/create}">
+
+                            <input name="lessonId" th:value="${lesson.id}" type="hidden">
+                            <label>
+                                <input name="taskType" placeholder="Введите название задания" required type="text">
+                            </label>
+
                             <button class="flex items-center text-indigo-500 hover:text-indigo-600">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
                                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +75,12 @@
             </div>
 
             <div class="flex flex-col w-full">
-                <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
+                <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b"
+                      method="post"
+                      th:action="@{/lessons/create}">
+                    <input name="semester" th:value="${semester}" type="hidden">
+                    <input name="groupId" th:value="${group.id}" type="hidden">
+                    <input name="lessonName" placeholder="Введите название предмета" required type="text">
                     <button class="flex items-center text-indigo-500 hover:text-indigo-600">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

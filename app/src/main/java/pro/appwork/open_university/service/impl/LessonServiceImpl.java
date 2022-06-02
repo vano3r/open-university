@@ -6,6 +6,7 @@ import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.Lesson;
 import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.model.enums.Semester;
+import pro.appwork.open_university.repository.GroupRepository;
 import pro.appwork.open_university.repository.LessonRepository;
 import pro.appwork.open_university.service.LessonService;
 
@@ -19,12 +20,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LessonServiceImpl implements LessonService {
     private final LessonRepository lessonRepository;
+    private final GroupRepository groupRepository;
 
     @Override
-    public void createByName(String name, Teacher teacher) {
+    public void create(Teacher teacher, Long groupId, Semester semester, String lessonName) {
+        Group group = groupRepository.findById(groupId).orElseThrow();
+
         Lesson newLesson = Lesson.builder()
-                .name(name)
                 .teacher(teacher)
+                .group(group)
+                .semester(semester)
+                .name(lessonName)
                 .build();
 
         lessonRepository.save(newLesson);

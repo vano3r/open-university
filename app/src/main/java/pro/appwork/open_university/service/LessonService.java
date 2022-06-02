@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface LessonService {
-    void createByName(String name, Teacher teacher);
+    void create(Teacher teacher, Long groupId, Semester semester, String lessonName);
 
     void deleteById(Long id, Teacher teacher);
 

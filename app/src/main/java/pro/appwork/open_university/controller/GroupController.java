@@ -16,6 +16,7 @@ import pro.appwork.open_university.security.annotation.IsAny;
 import pro.appwork.open_university.security.annotation.IsTeacher;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.LessonService;
+import pro.appwork.open_university.service.TaskTypeService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import java.util.Optional;
 public class GroupController {
     private final GroupService groupService;
     private final LessonService lessonService;
+    private final TaskTypeService typeService;
 
     @IsTeacher
     @GetMapping
@@ -65,6 +67,7 @@ public class GroupController {
             return "group";
         }
 
+        model.addAttribute("taskTypeList", typeService.getAll());
         model.addAttribute("lessonMap", lessonService.getAllMapBySemester(group, teacher));
 
         return "group";
