@@ -12,6 +12,7 @@ import pro.appwork.open_university.security.annotation.IsTeacher;
 import pro.appwork.open_university.service.GroupService;
 import pro.appwork.open_university.service.RegistrationService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -32,8 +33,10 @@ public class RegistrationController {
 
     @IsTeacher
     @PostMapping
-    public String invite(@ModelAttribute InviteDto dto) {
+    public String invite(HttpServletRequest request,
+                         @ModelAttribute InviteDto dto) {
         registrationService.sendInvite(
+                request,
                 dto.getEmail(),
                 dto.getRole() == null ? RoleEnum.STUDENT : dto.getRole(),
                 dto.getGroup()

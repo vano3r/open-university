@@ -17,6 +17,7 @@ import pro.appwork.open_university.service.RegistrationService;
 import pro.appwork.open_university.util.EmailTemplate;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -62,7 +63,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public void sendInvite(String email, RoleEnum role, Group group) {
+    public void sendInvite(HttpServletRequest request, String email, RoleEnum role, Group group) {
         //Дополнительная проверка, у преподователя не может быть группы
         if (role.equals(RoleEnum.TEACHER)) {
             group = null;
@@ -71,7 +72,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         var token = generateToken(email, role, group);
         mailSender.send(email,
                 EmailTemplate.EMAIL_SUBJECT_INVITE,
-                EmailTemplate.EMAIL_TEXT_INVITE.formatted(serverHost, token)
+                EmailTemplate.EMAIL_TEXT_INVITE.formatted(request.getHeader("Host"), token)
         );
     }
 

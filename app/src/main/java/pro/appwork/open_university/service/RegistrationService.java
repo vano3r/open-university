@@ -5,6 +5,7 @@ import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.RegistrationToken;
 import pro.appwork.open_university.model.enums.RoleEnum;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 public interface RegistrationService {
@@ -23,7 +24,7 @@ public interface RegistrationService {
      * @param role  роль пользвателя
      * @param group группа для студента
      */
-    void sendInvite(String email, RoleEnum role, Group group);
+    void sendInvite(HttpServletRequest request, String email, RoleEnum role, Group group);
 
     void registrationUser(RegistrationDto dto);
 }
