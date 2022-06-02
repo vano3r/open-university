@@ -5,7 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pro.appwork.open_university.model.entity.CustomUser;
-import pro.appwork.open_university.model.enums.UserRole;
+import pro.appwork.open_university.model.entity.Student;
+import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.security.CustomUserDetails;
 
 @Controller
@@ -14,10 +15,10 @@ public class MainController {
     @GetMapping
     public String viewMainPage(Authentication authentication) {
         CustomUser user = ((CustomUserDetails) authentication.getPrincipal()).user();
-        if (user.getRole().equals(UserRole.STUDENT)) {
-            return "redirect:/student";
+        if (user.rolesContains(RoleEnum.STUDENT)) {
+            return "redirect:/groups/" + ((Student) user).getGroup().getId();
         } else {
-            return "redirect:/teacher/groups";
+            return "redirect:/groups";
         }
     }
 }

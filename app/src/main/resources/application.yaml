@@ -1,1 +1,38 @@
-sp
+spring:
+
+  liquibase:
+    enabled: true
+    drop-first: false
+    change-log: classpath:db/liquibase-changelog.xml
+    default-schema: public
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/university_db
+    username: un_admin
+    password: un_password
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: no-replay@mail.ru
+    password: pass
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connection-timeout: 5000
+          timeout: 3000
+          write-timeout: 5000
