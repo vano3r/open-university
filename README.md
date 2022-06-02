@@ -40,3 +40,5 @@ spring.mail.properties.mail.smtp.ssl.enable=true
 ```console
 java -jar open-university.jar
 ```
+___
+#### Вопросы по проекту присылать на почту <ivan.vorobiev@java-spring.ru>
