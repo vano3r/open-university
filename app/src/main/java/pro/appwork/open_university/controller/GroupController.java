@@ -9,6 +9,8 @@ import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.Student;
 import pro.appwork.open_university.model.entity.Teacher;
+import pro.appwork.open_university.model.enums.AcademicDegreeEnum;
+import pro.appwork.open_university.model.enums.GroupStatusEnum;
 import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsAdmin;
@@ -75,12 +77,14 @@ public class GroupController {
 
     @PostMapping("/create")
     public String create(HttpServletRequest request,
-                         @RequestParam String name) {
+                         @RequestParam String name,
+                         @RequestParam Integer year,
+                         @RequestParam AcademicDegreeEnum degree) {
 
         String referer = Optional.of(request.getHeader("Referer"))
                 .orElse("/");
 
-        groupService.createByName(name);
+        groupService.create(name, year, degree);
 
         return "redirect:" + referer;
     }
@@ -100,12 +104,15 @@ public class GroupController {
     @PostMapping("/update/{id}")
     public String update(HttpServletRequest request,
                          @PathVariable Long id,
-                         @RequestParam String name) {
+                         @RequestParam String name,
+                         @RequestParam Integer year,
+                         @RequestParam AcademicDegreeEnum degree,
+                         @RequestParam GroupStatusEnum status) {
 
         String referer = Optional.of(request.getHeader("Referer"))
                 .orElse("/");
 
-        groupService.updateById(id, name);
+        groupService.updateById(id, name, year, degree, status);
 
         return "redirect:" + referer;
     }
