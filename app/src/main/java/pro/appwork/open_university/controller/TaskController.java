@@ -3,10 +3,10 @@ package pro.appwork.open_university.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pro.appwork.open_university.model.dto.RegistrationDto;
 import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsTeacher;
@@ -21,6 +21,12 @@ import java.util.Optional;
 @RequestMapping("/tasks")
 public class TaskController {
     private final TaskService taskService;
+
+    @GetMapping("/{id}")
+    public String getTask(@PathVariable Long id, Model model) {
+        model.addAttribute("task", taskService.getTask(id));
+        return "task";
+    }
 
     @PostMapping("/create")
     public String create(HttpServletRequest request,

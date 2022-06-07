@@ -11,6 +11,7 @@ import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.repository.LessonRepository;
 import pro.appwork.open_university.repository.TaskRepository;
 import pro.appwork.open_university.repository.TaskTypeRepository;
+import pro.appwork.open_university.security.annotation.IsAdmin;
 import pro.appwork.open_university.service.TaskService;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,12 @@ public class TaskServiceImpl implements TaskService {
     private final TaskTypeRepository taskTypeRepository;
     private final LessonRepository lessonRepository;
     private final TaskRepository taskRepository;
+
+    @IsAdmin
+    @Override
+    public Task getTask(Long id) {
+        return taskRepository.findById(id).orElseThrow();
+    }
 
     @Override
     public List<TaskType> getAll() {
