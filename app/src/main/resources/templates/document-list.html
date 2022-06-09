@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Загрузить файл</p>
+<form enctype="multipart/form-data" method="post" th:action="@{/documents/upload}">
+    <input name="file" type="file">
+    <input id="type" name="type" th:value="${type}" type="hidden">
+    <button type="submit" value="Загрузить задание">Загрузить</button>
+</form>
+<a th:href="@{/documents/download/2}">Скачать файл</a>
+
+<ul>
+    <li th:each="document: ${documentList}">
+        <span th:text="${document.uploadTime + ' ' + document.name}"></span>
+        <a th:href="@{/documents/download/{id} (id = ${document.id})}">скачать файл</a>
+    </li>
+</ul>
+</body>
+</html>
+<!--
+application/vnd.openxmlformats-officedocument.wordprocessingml.document
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+-->
