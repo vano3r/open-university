@@ -11,62 +11,99 @@
 
     <title>Группы</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.bpopup.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div th:insert="~{./layout/navbar-layout}"></div>
 
 <section class="container mx-auto w-3/4">
-    <div class="flex flex-col items-center py-24">
-        <div class="text-center w-full mb-12">
-            <h1 class="text-3xl font-medium title-font mb-4 text-gray-900">
-                Группы
-            </h1>
-        </div>
+    <div class="flex flex-col items-center py-12">
+        <h1 class="text-3xl font-medium title-font mb-12 text-gray-900">
+            Список групп
+        </h1>
 
-        <form class="flex w-full justify-center" method="post"
-              sec:authorize="hasAuthority('ADMIN')"
-              th:action="@{/groups/create}">
-
-            <div class="flex flex-col">
-                <label for="group-input" class="leading-7 text-base text-gray-600">Введите название группы</label>
-                <input id="group-input" type="text" name="name"
-                       class="bg-gray-100 h-11 bg-opacity-50 rounded border border-gray-300
-                            focus:border-indigo-500 focus:bg-transparent focus:ring-2
-                            focus:ring-indigo-200 text-xl outline-none text-gray-700
-                            py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-
-            <div class="flex flex-col justify-end">
-                <button class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none
-                            hover:bg-indigo-600 rounded text-xl" type="submit">
-                    Добавить
+        <div class="flex w-full">
+            <form class="flex w-3/4 space-x-4">
+                <select class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50 border block border-gray-300
+                                focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200
+                                focus:outline-none rounded">
+                    <option disabled selected>Год поступления</option>
+                    <option>2014</option>
+                    <option>2015</option>
+                </select>
+                <select class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50 border block border-gray-300
+                                focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200
+                                focus:outline-none rounded">
+                    <option disabled selected>Квалификация</option>
+                    <option>Бакалавриат</option>
+                    <option>Магистратура</option>
+                </select>
+                <button type="submit"
+                        class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none
+                                hover:bg-indigo-600 rounded text-xl">
+                    Применить
+                </button>
+            </form>
+            <div class="flex justify-end w-1/4">
+                <button type="button" onclick="General.showStandardModal('group-modal')"
+                        class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none
+                                hover:bg-indigo-600 rounded text-xl">
+                    Добавить группу
                 </button>
             </div>
-        </form>
+        </div>
 
-        <div class="w-3/4 mt-20">
+        <div class="w-full mt-20">
             <ul>
-                <li th:each="group : ${groupList}"
-                    class="flex justify-between p-3 hover:bg-indigo-500 hover:text-white">
+                <li th:each="group : ${groupList}" class="flex py-3">
+                    <div class="flex w-3/4">
+                        <span class="w-1/12 mr-6 border-r border-r-2 border-indigo-500">
+                            2014
+                        </span>
 
-                    <a th:href="@{/groups/{id}(id = ${group.id})}" th:text="${group.name}"></a>
+                        <div class="w-4/12 mr-6 border-r border-r-2 border-indigo-500">
+                            <a th:href="@{/groups/{id} (id = ${group.id})}"
+                               th:text="${group.name}"
+                               class="hover:text-indigo-700"></a>
+                        </div>
 
-                    <form method="post"
-                          sec:authorize="hasAuthority('ADMIN')"
-                          th:action="@{/groups/delete/{id} (id = ${group.id})}">
+                        <span class="w-3/12 mr-6 border-r border-r-2 border-indigo-500">
+                            Бакалавриат
+                        </span>
 
-                        <button type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        <span class="w-4/12 mr-6 text-emerald-400 font-semibold">
+                            активная группа
+                        </span>
+                    </div>
+
+                    <div class="w-1/4 flex justify-end items-center space-x-4">
+                        <button type="button"
+                                th:attr="onclick=|GroupList.showGroupModalWithParams('${group.name}')|">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                             </svg>
                         </button>
-                    </form>
+
+                        <form method="post"
+                              sec:authorize="hasAuthority('ADMIN')"
+                              th:action="@{/groups/delete/{id} (id = ${group.id})}">
+                            <button type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </li>
             </ul>
         </div>
     </div>
 </section>
+
+<div th:insert="~{modal/group-modal.html}"></div>
 </body>
 </html>
