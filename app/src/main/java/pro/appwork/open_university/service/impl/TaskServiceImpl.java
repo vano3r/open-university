@@ -12,14 +12,11 @@ import pro.appwork.open_university.repository.LessonRepository;
 import pro.appwork.open_university.repository.TaskRepository;
 import pro.appwork.open_university.repository.TaskTypeRepository;
 import pro.appwork.open_university.security.annotation.IsAdmin;
+import pro.appwork.open_university.service.FileStorage;
 import pro.appwork.open_university.service.TaskService;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskTypeRepository taskTypeRepository;
     private final LessonRepository lessonRepository;
     private final TaskRepository taskRepository;
+    private final FileStorage fileStorage;
 
     @IsAdmin
     @Override
@@ -66,29 +64,22 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
 
-        StringBuilder builderPath = new StringBuilder()
-                .append("data/")
-                .append(task.getLesson().getSemester().getCourse())
-                .append(" Курс")
-                .append("/")
-                .append(task.getLesson().getSemester().getDescription())
-                .append("/")
-                .append(task.getLesson().getGroup().getName())
-                .append("/")
-                .append(task.getLesson().getName())
-                .append("/")
-                .append(task.getType().getName())
-                .append("/")
-                .append(fileName);
 
-        try {
-            Files.createDirectories(Path.of(builderPath.toString()));
-            Path path = Paths.get(builderPath.toString());
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        Path path = createPath(task, fileName);
+//            Files.createDirectories(path);
+//            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            taskRepository.save(task.toBuilder().filePath(builderPath.toString()).build());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        fileStorage.upload(path, file);
+        taskRepository.save(task.toBuilder().filePath(path.toString()).build());
+    }
+
+    private Path createPath(Task task, String fileName) {
+        return Path.of(task.getLesson().getSemester().getCourse().toString() + " Курс",
+                task.getLesson().getSemester().getDescription(),
+                task.getLesson().getGroup().getName(),
+                task.getLesson().getName(),
+                task.getType().getName(),
+                fileName
+        );
     }
 }

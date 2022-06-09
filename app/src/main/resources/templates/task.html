@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>Задание</title>
@@ -25,24 +27,52 @@
                 <span>Группа: <span class="font-bold" th:text="${task.lesson.group.name}"></span></span>
                 <span>Дисциплина: <span class="font-bold" th:text="${task.lesson.name}"></span></span>
                 <span>Тип работы: <span class="font-bold" th:text="${task.type.name}"></span></span>
+                <span>Название файла с заданием: <span class="font-bold" th:text="${task.filePath}"></span></span>
+                <span>Дата загрузки: <span class="font-bold" th:text="${task.filePath}"></span></span>
             </div>
             <div class="flex flex-col font-medium space-y-2">
+
+                <a class="text-white text-center bg-gray-500 border-0 py-2 px-8 focus:outline-none
+                            hover:bg-indigo-600 rounded text-xl"
+                   href="#"
+                   style="pointer-events: none"
+                   th:if="${task.filePath == null}"
+                >Задание не загружено</a>
+
                 <a href="#"
                    class="text-white text-center bg-indigo-500 border-0 py-2 px-8 focus:outline-none
-                            hover:bg-indigo-600 rounded text-xl">
-                    Скачать задание
-                </a>
+                            hover:bg-indigo-600 rounded text-xl"
+                   th:if="${task.filePath != null}"
+                >Скачать задание</a>
 
-                <form class="flex">
-                    <input type="file"
+                <form class="flex" enctype="multipart/form-data" method="post"
+                      sec:authorize="hasAuthority('TEACHER')"
+                      th:action="@{/tasks/uploadFile}">
+                    <input name="file" required type="file"
                            class="font-medium px-3 py-1.5 border border-gray-300 rounded
                                     focus:bg-white focus:border-blue-600 focus:outline-none">
+                    <input name="taskId" th:value="${task.id}" type="hidden">
 
                     <button class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none
-                            hover:bg-indigo-600 rounded text-xl" type="submit">Загрузить решение</button>
+                            hover:bg-indigo-600 rounded text-xl" type="submit">Загрузить задание
+                    </button>
+
+
                 </form>
+
+                <!--                <form class="flex" method="post"-->
+                <!--                      th:action="@{}"-->
+                <!--                      sec:authorize="hasAuthority('STUDENT')">-->
+                <!--                    <input type="file"-->
+                <!--                           class="font-medium px-3 py-1.5 border border-gray-300 rounded-->
+                <!--                                    focus:bg-white focus:border-blue-600 focus:outline-none">-->
+
+                <!--                    <button class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none-->
+                <!--                            hover:bg-indigo-600 rounded text-xl" type="submit">Загрузить решение</button>-->
+                <!--                </form>-->
                 <span class="text-green-500">решение/задание успешно загружено</span>
-                <span class="text-red-500">не удалось загрузить решение/задание</span>
+                <span class="text-red-500">Не удалось загрузить задание</span>
+
             </div>
         </div>
 
@@ -53,13 +83,19 @@
 
                     <div class="flex space-x-4">
                         <a href="#" title="Загрузить последнее решение" class="hover:text-indigo-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </a>
                         <a href="#" title="Загрузить все решения" class="hover:text-indigo-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </a>
                     </div>
@@ -69,13 +105,19 @@
 
                     <div class="flex space-x-4">
                         <a href="#" title="Загрузить последнее решение" class="hover:text-indigo-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </a>
                         <a href="#" title="Загрузить все решения" class="hover:text-indigo-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </a>
                     </div>
@@ -85,13 +127,19 @@
 
                     <div class="flex space-x-4">
                         <a href="#" title="Загрузить последнее решение" class="hover:text-indigo-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </a>
                         <a href="#" title="Загрузить все решения" class="hover:text-indigo-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </a>
                     </div>

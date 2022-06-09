@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pro.appwork.open_university.model.dto.RegistrationDto;
 import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsTeacher;
@@ -44,13 +43,11 @@ public class TaskController {
     }
 
     @PostMapping("/uploadFile")
-    public String uploadFile(HttpServletRequest request,
-                             Authentication authentication,
+    public String uploadFile(Authentication authentication,
+                             @RequestHeader("Referer") String referer,
                              @RequestParam Long taskId,
-                             @RequestParam("file") MultipartFile file) {
+                             @RequestParam MultipartFile file) {
 
-        String referer = Optional.of(request.getHeader("Referer"))
-                .orElse("/");
         Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
 
         taskService.uploadFile(teacher, taskId, file);
