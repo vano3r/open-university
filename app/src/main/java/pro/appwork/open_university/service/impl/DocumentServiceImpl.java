@@ -1,92 +1,92 @@
 package pro.appwork.open_university.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.appwork.open_university.model.entity.Document;
+import pro.appwork.open_university.model.entity.DocumentLabel;
 import pro.appwork.open_university.model.entity.Teacher;
-import pro.appwork.open_university.model.enums.DocumentTypeEnum;
+import pro.appwork.open_university.repository.DocumentLabelRepository;
 import pro.appwork.open_university.repository.DocumentRepository;
 import pro.appwork.open_university.service.DocumentService;
+import pro.appwork.open_university.service.FileStorage;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
-    private final static String DOCUMENT_UPLOAD_PATH = "Документы/";
+    private final DocumentLabelRepository labelRepository;
     private final DocumentRepository documentRepository;
+    private final FileStorage fileStorage;
 
     @Override
-    public void uploadFile(Teacher teacher, MultipartFile file, DocumentTypeEnum type) {
-        StringBuilder uploadPath = new StringBuilder()
-                .append(DOCUMENT_UPLOAD_PATH)
-                .append(teacher.getShortName())
-                .append("/")
-                .append(type.getDescription())
-                .append("/")
-                .append(file.getOriginalFilename());
-        try {
-            Path path = Path.of(uploadPath.toString());
-            Files.createDirectories(path.getParent());
+    public List<DocumentLabel> getAllLabels(Teacher teacher) {
+        return labelRepository.findAllByTeacher(teacher);
+    }
 
-            if (!Files.exists(path)) {
-                documentRepository.save(Document.builder()
-                        .teacher(teacher)
-                        .type(type)
-                        .name(file.getOriginalFilename())
-                        .filePath(uploadPath.toString())
-                        .build());
-            }
-            Document document = documentRepository.findByTeacherAndFilePath(teacher, path.toString()).orElseThrow();
+    @Override
+    public List<Document> getAllDocumentByLabel(Teacher teacher, String labelName) {
+        DocumentLabel label = labelRepository.findByTeacherAndName(teacher, labelName)
+                .orElseThrow();
 
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            documentRepository.save(document.toBuilder().uploadTime(LocalDateTime.now()).build());
+        return documentRepository.findAllByLabel(label);
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    public void createLabel(Teacher teacher, String labelName) {
+        DocumentLabel newLabel = DocumentLabel.builder()
+                .teacher(teacher)
+                .name(labelName)
+                .build();
+
+        labelRepository.save(newLabel);
+    }
+
+    @Override
+    public void deleteLabel(Teacher teacher, String labelName) {
+        labelRepository.deleteByTeacherAndName(teacher, labelName);
+    }
+
+    @Override
+    public void createDocument(Teacher teacher, String labelName, MultipartFile file) {
+        DocumentLabel label = labelRepository.findByTeacherAndName(teacher, labelName).orElseThrow();
+
+        var optDocument = documentRepository.findByLabelAndName(label, file.getOriginalFilename());
+        Path path = createPath(teacher, labelName, file.getOriginalFilename());
+
+        if (optDocument.isEmpty()) {
+            Document newDocument = Document.builder()
+                    .name(file.getOriginalFilename())
+                    .filePath(path.toString())
+                    .label(label)
+                    .build();
+
+            documentRepository.save(newDocument);
+        } else {
+            documentRepository.save(optDocument.get().toBuilder().uploadTime(LocalDateTime.now()).build());
         }
+
+        fileStorage.upload(path, file);
     }
 
     @Override
-    public ResponseEntity<InputStreamResource> downloadFile(Teacher teacher, Long id) {
-        Document document = documentRepository.findByTeacherAndId(teacher, id).orElseThrow();
+    public void deleteDocument(Teacher teacher, String labelName, String documentName) {
+        DocumentLabel label = labelRepository.findByTeacherAndName(teacher, labelName).orElseThrow();
+        Document document = documentRepository.findByLabelAndName(label, documentName).orElseThrow();
 
-        try {
-
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment;filename=" + URLEncoder.encode(
-                                    document.getName(), StandardCharsets.UTF_8)
-                    )
-                    .contentLength(document.getFile().length())
-                    .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .body(new InputStreamResource(new FileInputStream(document.getFile())));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        Path path = Path.of(document.getFilePath());
+        if (fileStorage.notExists(path)) {
+            throw new RuntimeException();
         }
+
+        documentRepository.delete(document);
+        fileStorage.delete(path);
     }
 
-    @Override
-    public List<Document> getAllByTeacherAndType(Teacher teacher, DocumentTypeEnum type) {
-        return documentRepository.findAllByTeacherAndType(teacher, type);
-    }
-
-    @Override
-    public void deleteById(Teacher teacher, Long id) {
-        documentRepository.deleteByTeacherAndId(teacher, id);
+    private Path createPath(Teacher teacher, String labelName, String fileName) {
+        return Path.of("Документы", teacher.getShortName(), labelName, fileName);
     }
 }

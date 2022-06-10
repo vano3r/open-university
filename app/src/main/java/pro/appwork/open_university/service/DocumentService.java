@@ -1,21 +1,22 @@
 package pro.appwork.open_university.service;
 
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import pro.appwork.open_university.model.entity.Document;
+import pro.appwork.open_university.model.entity.DocumentLabel;
 import pro.appwork.open_university.model.entity.Teacher;
-import pro.appwork.open_university.model.enums.DocumentTypeEnum;
 
 import java.util.List;
 
 public interface DocumentService {
+    List<DocumentLabel> getAllLabels(Teacher teacher);
 
-    void uploadFile(Teacher teacher, MultipartFile file, DocumentTypeEnum type);
+    List<Document> getAllDocumentByLabel(Teacher teacher, String labelName);
 
-    ResponseEntity<InputStreamResource> downloadFile(Teacher teacher, Long fileId);
+    void createLabel(Teacher teacher, String labelName);
 
-    List<Document> getAllByTeacherAndType(Teacher teacher, DocumentTypeEnum type);
+    void deleteLabel(Teacher teacher, String labelName);
 
-    void deleteById(Teacher teacher, Long id);
+    void createDocument(Teacher teacher, String labelName, MultipartFile file);
+
+    void deleteDocument(Teacher teacher, String labelName, String documentName);
 }

@@ -1,21 +1,19 @@
 package pro.appwork.open_university.model.entity;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "t_document")
+@Table(name = "t_label")
 @SuperBuilder(toBuilder = true)
-public class Document {
+public class DocumentLabel {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -23,15 +21,7 @@ public class Document {
     @Column
     private String name;
 
-    @Column
-    private String filePath;
-
-
-    @Column
-    @Builder.Default
-    private LocalDateTime uploadTime = LocalDateTime.now();
-
     @ManyToOne
-    @JoinColumn(name = "label_id")
-    private DocumentLabel label;
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
 }

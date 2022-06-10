@@ -18,5 +18,5 @@ import java.util.List;
 public class Teacher extends CustomUser {
     @Singular
     @OneToMany(mappedBy = "teacher")
-    List<Document> documents;
+    List<DocumentLabel> labels;
 }

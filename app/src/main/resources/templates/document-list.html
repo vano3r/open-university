@@ -7,10 +7,16 @@
 </head>
 <body>
 <p>Загрузить файл</p>
-<form enctype="multipart/form-data" method="post" th:action="@{/documents/upload}">
+<form enctype="multipart/form-data" method="post" th:action="@{/documents/create}">
     <input name="file" type="file">
-    <input id="type" name="type" th:value="${type}" type="hidden">
+    <input name="labelName" th:value="${currentLabelName}" type="hidden">
     <button type="submit" value="Загрузить задание">Загрузить</button>
+</form>
+
+<form enctype="multipart/form-data" method="post" th:action="@{/documents/delete}">
+    <input name="labelName" th:value="${currentLabelName}" type="hidden">
+    <input name="documentName" type="hidden" value="Аватарка min.PNG">
+    <button type="submit" value="Загрузить задание">Удалить</button>
 </form>
 <a th:href="@{/documents/download/2}">Скачать файл</a>
 
