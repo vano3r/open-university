@@ -4,31 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <script type="text/javascript" src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}"></script>
 </head>
 <body>
-<p>Загрузить файл</p>
-<form enctype="multipart/form-data" method="post" th:action="@{/documents/create}">
-    <input name="file" type="file">
-    <input name="labelName" th:value="${currentLabelName}" type="hidden">
-    <button type="submit" value="Загрузить задание">Загрузить</button>
-</form>
+<div th:insert="~{./layout/navbar-layout}"></div>
 
-<form enctype="multipart/form-data" method="post" th:action="@{/documents/delete}">
-    <input name="labelName" th:value="${currentLabelName}" type="hidden">
-    <input name="documentName" type="hidden" value="Аватарка min.PNG">
-    <button type="submit" value="Загрузить задание">Удалить</button>
-</form>
-<a th:href="@{/documents/download/2}">Скачать файл</a>
+<section class="flex flex-col w-3/4 mx-auto pt-12 pb-48">
+    <h1 class="mb-24 text-3xl font-medium text-center text-gray-800">
+        Документы
+    </h1>
 
-<ul>
-    <li th:each="document: ${documentList}">
-        <span th:text="${document.uploadTime + ' ' + document.name}"></span>
-        <a th:href="@{/documents/download/{id} (id = ${document.id})}">скачать файл</a>
-    </li>
-</ul>
+    <form th:action="@{/documents/upload}" method="post" enctype="multipart/form-data"
+          class="flex w-full justify-center mb-12">
+        <input name="file" type="file" required
+               class="font-medium px-3 py-1.5 border border-gray-300 rounded
+                        focus:bg-white focus:border-blue-600 focus:outline-none">
+        <input id="label" type="text" placeholder="Введите лейбл" required
+               class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500
+                        focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-xl outline-none text-gray-700 ml-4
+                        py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        <input name="type" type="hidden" th:value="${type}">
+        <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none
+                                        hover:bg-indigo-600 rounded text-xl">
+            Загрузить документ
+        </button>
+    </form>
+
+    <hr class="mb-12" />
+
+    <div class="labels flex flex-wrap mb-12">
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">Все документы</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+    </div>
+
+    <hr class="mb-12" />
+
+    <ul class="flex flex-col w-3/4 mx-auto mt-8 text-xl font-semibold text-gray-600">
+        <li th:each="document: ${documentList}"
+            class="flex justify-between hover:text-black">
+            <span th:text="${document.uploadTime + ' ' + document.name}"></span>
+            <div class="flex space-x-4">
+                <a th:href="@{/documents/download/{id} (id = ${document.id})}"
+                   class="text-indigo-500 hover:text-indigo-700">
+                    скачать файл
+                </a>
+                <form>
+                    <button class="text-red-500 hover:text-red-700">
+                        удалить
+                    </button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</section>
 </body>
 </html>
-<!--
-application/vnd.openxmlformats-officedocument.wordprocessingml.document
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
--->
