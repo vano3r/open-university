@@ -36,22 +36,22 @@
     <hr class="mb-12" />
 
     <div class="labels flex flex-wrap mb-12">
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">Все документы</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
-        <a class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">Все документы</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla 1</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla 2</a>
+        <a href="#" class="px-3 py-1 m-2 rounded-2xl text-xl">bla bla bla 3</a>
     </div>
 
     <hr class="mb-12" />
@@ -60,10 +60,17 @@
         <li th:each="document: ${documentList}"
             class="flex justify-between hover:text-black">
             <span th:text="${document.uploadTime + ' ' + document.name}"></span>
-            <a th:href="@{/documents/download/{id} (id = ${document.id})}"
-               class="text-indigo-500 hover:text-indigo-700">
-                скачать файл
-            </a>
+            <div class="flex space-x-4">
+                <a th:href="@{/documents/download/{id} (id = ${document.id})}"
+                   class="text-indigo-500 hover:text-indigo-700">
+                    скачать файл
+                </a>
+                <form>
+                    <button class="text-red-500 hover:text-red-700">
+                        удалить
+                    </button>
+                </form>
+            </div>
         </li>
     </ul>
 </section>
