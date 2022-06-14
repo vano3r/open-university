@@ -22,16 +22,16 @@
                 Приглашение
             </a>
 
-            <!--            <a class="mr-5 hover:text-gray-900"-->
-            <!--               sec:authorize="hasAuthority('ADMIN')"-->
-            <!--               th:href="@{/groups}">-->
-            <!--                Группы-->
-            <!--            </a>-->
-
             <a class="mr-5 hover:text-gray-900"
                sec:authorize="hasAuthority('ADMIN')"
                th:href="@{/taskTypes}">
                 Типы заданий
+            </a>
+
+            <a class="mr-5 hover:text-gray-900"
+               sec:authorize="hasAnyAuthority('ADMIN', 'TEACHER')"
+               th:href="@{/documents?type=master}">
+                Документы
             </a>
         </nav>
         <form method="post" th:action="@{/logout}">
