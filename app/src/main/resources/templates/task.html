@@ -62,9 +62,11 @@
 
                 <form class="flex" enctype="multipart/form-data" method="post"
                       sec:authorize="hasAuthority('STUDENT')"
-                      th:action="@{/solution/uploadFile}">
+                      th:action="@{/solutions/uploadFile}">
                     <input class="font-medium px-3 py-1.5 border border-gray-300 rounded
-                                                    focus:bg-white focus:border-blue-600 focus:outline-none" name="file"
+                                                    focus:bg-white focus:border-blue-600 focus:outline-none"
+                           name="file"
+                           required
                            type="file">
                     <input name="taskId" th:value="${task.id}" type="hidden">
 
@@ -79,11 +81,14 @@
 
         <div class="flex flex-col w-full">
             <ul class="mt-12 text-lg">
-                <li class="flex justify-between border-b px-4 pb-2">
-                    <span>Иванов Иван Иванович</span>
+                <li class="flex justify-between border-b px-4 pb-2"
+                    th:each="solution: ${solutionList}">
+                    <span th:text="${solution.student.getFullName()}">Алексеев Алексей Алексеевич</span>
 
                     <div class="flex space-x-4">
-                        <a href="#" title="Загрузить последнее решение" class="hover:text-indigo-500">
+                        <a class="hover:text-indigo-500"
+                           th:href="@{/solutions/download/{id} (id = ${solution.id})}"
+                           title="Загрузить последнее решение">
                             <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
                                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
@@ -91,58 +96,14 @@
                                       stroke-linejoin="round"/>
                             </svg>
                         </a>
-                        <a href="#" title="Загрузить все решения" class="hover:text-indigo-500">
-                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                    </div>
-                </li>
-                <li class="flex justify-between border-b px-4 pb-2">
-                    <span>Алексеев Алексей Алексеевич</span>
-
-                    <div class="flex space-x-4">
-                        <a href="#" title="Загрузить последнее решение" class="hover:text-indigo-500">
-                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <a href="#" title="Загрузить все решения" class="hover:text-indigo-500">
-                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                    </div>
-                </li>
-                <li class="flex justify-between border-b px-4 pb-2">
-                    <span>Александров Александр Александрович</span>
-
-                    <div class="flex space-x-4">
-                        <a href="#" title="Загрузить последнее решение" class="hover:text-indigo-500">
-                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <a href="#" title="Загрузить все решения" class="hover:text-indigo-500">
-                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-                            </svg>
-                        </a>
+                        <!--                        <a href="#" title="Загрузить все решения" class="hover:text-indigo-500">-->
+                        <!--                            <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2"-->
+                        <!--                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">-->
+                        <!--                                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"-->
+                        <!--                                      stroke-linecap="round"-->
+                        <!--                                      stroke-linejoin="round"/>-->
+                        <!--                            </svg>-->
+                        <!--                        </a>-->
                     </div>
                 </li>
             </ul>

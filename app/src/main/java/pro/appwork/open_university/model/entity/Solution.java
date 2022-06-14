@@ -22,7 +22,7 @@ public class Solution {
     private String filePath;
 
     @Column
-    private Integer version;
+    private String fileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Task task;

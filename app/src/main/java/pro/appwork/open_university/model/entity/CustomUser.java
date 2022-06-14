@@ -81,4 +81,18 @@ public abstract class CustomUser {
 
         return shortName.toString();
     }
+
+    public String getFullName() {
+        StringBuilder fullName = new StringBuilder();
+        fullName.append(lastName)
+                .append(" ")
+                .append(firstName);
+
+        if (middleName != null) {
+            fullName.append(" ")
+                    .append(middleName);
+        }
+
+        return fullName.toString();
+    }
 }

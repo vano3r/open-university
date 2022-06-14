@@ -11,10 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Student;
+import pro.appwork.open_university.model.entity.Task;
 import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsAny;
 import pro.appwork.open_university.security.annotation.IsTeacher;
+import pro.appwork.open_university.service.SolutionService;
 import pro.appwork.open_university.service.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ import java.util.Optional;
 @RequestMapping("/tasks")
 public class TaskController {
     private final TaskService taskService;
+    private final SolutionService solutionService;
 
     @IsAny
     @GetMapping("/{id}")
@@ -40,7 +43,13 @@ public class TaskController {
             return "redirect:/groups/" + student.getGroup().getId();
         }
 
-        model.addAttribute("task", taskService.getTask(id));
+        Task task = taskService.getTask(id);
+
+        if (user instanceof Teacher) {
+            model.addAttribute("solutionList", solutionService.getAllForTask(task));
+        }
+        model.addAttribute("task", task);
+
 
         return "task";
     }
