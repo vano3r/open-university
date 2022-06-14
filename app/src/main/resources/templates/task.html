@@ -28,7 +28,9 @@
                 <span>Дисциплина: <span class="font-bold" th:text="${task.lesson.name}"></span></span>
                 <span>Тип работы: <span class="font-bold" th:text="${task.type.name}"></span></span>
                 <span>Название файла с заданием: <span class="font-bold" th:text="${task.fileName}"></span></span>
-                <span>Дата загрузки: <span class="font-bold" th:text="${task.uploadDate}"></span></span>
+                <span>Дата загрузки: <span class="font-bold"
+                                           th:text="${#temporals.format(task.uploadDate, 'yyy.MM.dd HH:mm:ss')}">
+                </span></span>
             </div>
             <div class="flex flex-col font-medium space-y-2">
 
@@ -39,7 +41,7 @@
                    th:if="${task.filePath == null}"
                 >Задание не загружено</a>
 
-                <a href="#"
+                <a th:href="@{/tasks/download/{id} (id = ${task.id})}"
                    class="text-white text-center bg-indigo-500 border-0 py-2 px-8 focus:outline-none
                             hover:bg-indigo-600 rounded text-xl"
                    th:if="${task.filePath != null}"
@@ -56,23 +58,22 @@
                     <button class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none
                             hover:bg-indigo-600 rounded text-xl" type="submit">Загрузить задание
                     </button>
-
-
                 </form>
 
-                <!--                <form class="flex" method="post"-->
-                <!--                      th:action="@{}"-->
-                <!--                      sec:authorize="hasAuthority('STUDENT')">-->
-                <!--                    <input type="file"-->
-                <!--                           class="font-medium px-3 py-1.5 border border-gray-300 rounded-->
-                <!--                                    focus:bg-white focus:border-blue-600 focus:outline-none">-->
+                <form class="flex" enctype="multipart/form-data" method="post"
+                      sec:authorize="hasAuthority('STUDENT')"
+                      th:action="@{/solution/uploadFile}">
+                    <input class="font-medium px-3 py-1.5 border border-gray-300 rounded
+                                                    focus:bg-white focus:border-blue-600 focus:outline-none" name="file"
+                           type="file">
+                    <input name="taskId" th:value="${task.id}" type="hidden">
 
-                <!--                    <button class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none-->
-                <!--                            hover:bg-indigo-600 rounded text-xl" type="submit">Загрузить решение</button>-->
-                <!--                </form>-->
-                <span class="text-green-500">решение/задание успешно загружено</span>
-                <span class="text-red-500">Не удалось загрузить задание</span>
-
+                    <button class="text-white bg-indigo-500 border-0 py-2 px-8 ml-4 focus:outline-none
+                                            hover:bg-indigo-600 rounded text-xl" type="submit">Загрузить решение
+                    </button>
+                </form>
+                <span class="text-green-500">[[${message}]]</span>
+                <span class="text-red-500">[[${error}]]</span>
             </div>
         </div>
 

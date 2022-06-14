@@ -41,3 +41,6 @@ spring:
           connection-timeout: 5000
           timeout: 3000
           write-timeout: 5000
+server:
+  tomcat:
+    max-swallow-size: 200MB

@@ -20,7 +20,7 @@ public class FileSystemStorage implements FileStorage {
     private final Path ROOT = Paths.get("data");
 
     @Override
-    public void upload(Path path, MultipartFile file) {
+    public void upload(Path path, MultipartFile file) throws RuntimeException {
         try {
             path = ROOT.resolve(path);
             Files.createDirectories(path.getParent());
@@ -64,6 +64,17 @@ public class FileSystemStorage implements FileStorage {
     public void delete(Path path) {
         try {
             Files.delete(ROOT.resolve(path));
+        } catch (IOException e) {
+            throw new RuntimeException("Could not delete the file! " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteIfExists(Path path) {
+        try {
+            if (Files.exists(ROOT.resolve(path))) {
+                Files.delete(ROOT.resolve(path));
+            }
         } catch (IOException e) {
             throw new RuntimeException("Could not delete the file! " + e.getMessage());
         }

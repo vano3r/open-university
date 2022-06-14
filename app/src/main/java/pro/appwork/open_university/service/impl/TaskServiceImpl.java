@@ -1,8 +1,13 @@
 package pro.appwork.open_university.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pro.appwork.open_university.model.entity.*;
 import pro.appwork.open_university.repository.LessonRepository;
@@ -11,10 +16,13 @@ import pro.appwork.open_university.repository.TaskTypeRepository;
 import pro.appwork.open_university.service.FileStorage;
 import pro.appwork.open_university.service.TaskService;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -59,22 +67,48 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void uploadFile(Teacher teacher, Long taskId, MultipartFile file) {
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+    public void uploadFile(Teacher teacher, Long taskId, MultipartFile file) throws RuntimeException {
+        Task task = taskRepository.findById(taskId).orElseThrow(
+                EntityNotFoundException::new
+        );
 
-        Task task = taskRepository.findById(taskId).orElseThrow();
+        fileStorage.deleteIfExists(Path.of(task.getFilePath()));
 
-
-        Path path = createPath(task, fileName);
-//            Files.createDirectories(path);
-//            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
+        Path path = createPath(task, file.getOriginalFilename());
         fileStorage.upload(path, file);
-        taskRepository.save(task.toBuilder().filePath(path.toString()).build());
+
+        taskRepository.save(task.toBuilder()
+                .filePath(path.toString())
+                .fileName(file.getOriginalFilename())
+                .uploadDate(LocalDateTime.now())
+                .build()
+        );
+
+    }
+
+    @Override
+    public ResponseEntity<InputStreamResource> downloadFile(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow();
+        try {
+            Resource file = fileStorage.download(Path.of(task.getFilePath()));
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            ContentDisposition.attachment()
+                                    .filename(task.getFileName(), StandardCharsets.UTF_8)
+                                    .build().toString()
+                    )
+                    .contentLength(file.contentLength())
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(new InputStreamResource(file.getInputStream()));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Path createPath(Task task, String fileName) {
-        return Path.of(task.getLesson().getSemester().getCourse(),
+        return Path.of("Учебный процесс",
+                task.getLesson().getSemester().getCourse(),
                 task.getLesson().getSemester().getDescription(),
                 task.getLesson().getGroup().getName(),
                 task.getLesson().getName(),

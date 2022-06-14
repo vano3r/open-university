@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Path;
 
 public interface FileStorage {
-    void upload(Path path, MultipartFile file);
+    void upload(Path path, MultipartFile file) throws RuntimeException;
 
     Resource download(Path path);
 
@@ -15,4 +15,6 @@ public interface FileStorage {
     boolean notExists(Path path);
 
     void delete(Path path);
+
+    void deleteIfExists(Path path);
 }

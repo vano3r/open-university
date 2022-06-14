@@ -1,11 +1,14 @@
 package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Student;
 import pro.appwork.open_university.model.entity.Teacher;
@@ -61,12 +64,30 @@ public class TaskController {
     public String uploadFile(Authentication authentication,
                              @RequestHeader("Referer") String referer,
                              @RequestParam Long taskId,
-                             @RequestParam MultipartFile file) {
+                             @RequestParam MultipartFile file,
+                             RedirectAttributes redirectAttrs) {
 
         Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
 
         taskService.uploadFile(teacher, taskId, file);
+        redirectAttrs.addFlashAttribute("message", "Файл успешно загружен!");
 
         return "redirect:" + referer;
+    }
+
+    @IsAny
+    @ResponseBody
+    @GetMapping("/download/{id}")
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable Long id,
+                                                            Authentication authentication) {
+
+        CustomUser user = ((CustomUserDetails) authentication.getPrincipal()).user();
+        if (user instanceof Student student && taskService.taskNotForStudent(id, student)) {
+            //Если студент пытается скачать задания не для его группы,
+            return ResponseEntity.noContent().build();
+        }
+
+
+        return taskService.downloadFile(id);
     }
 }
