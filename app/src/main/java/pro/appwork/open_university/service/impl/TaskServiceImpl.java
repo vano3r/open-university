@@ -4,14 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import pro.appwork.open_university.model.entity.Lesson;
-import pro.appwork.open_university.model.entity.Task;
-import pro.appwork.open_university.model.entity.TaskType;
-import pro.appwork.open_university.model.entity.Teacher;
+import pro.appwork.open_university.model.entity.*;
 import pro.appwork.open_university.repository.LessonRepository;
 import pro.appwork.open_university.repository.TaskRepository;
 import pro.appwork.open_university.repository.TaskTypeRepository;
-import pro.appwork.open_university.security.annotation.IsAdmin;
 import pro.appwork.open_university.service.FileStorage;
 import pro.appwork.open_university.service.TaskService;
 
@@ -28,10 +24,14 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final FileStorage fileStorage;
 
-    @IsAdmin
     @Override
     public Task getTask(Long id) {
         return taskRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public boolean taskNotForStudent(Long id, Student student) {
+        return !taskRepository.checkTaskForStudent(id, student.getGroup().getId());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private Path createPath(Task task, String fileName) {
-        return Path.of(task.getLesson().getSemester().getCourse().toString() + " Курс",
+        return Path.of(task.getLesson().getSemester().getCourse(),
                 task.getLesson().getSemester().getDescription(),
                 task.getLesson().getGroup().getName(),
                 task.getLesson().getName(),

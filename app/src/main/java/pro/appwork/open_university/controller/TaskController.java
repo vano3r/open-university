@@ -6,8 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pro.appwork.open_university.model.entity.CustomUser;
+import pro.appwork.open_university.model.entity.Student;
 import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.security.CustomUserDetails;
+import pro.appwork.open_university.security.annotation.IsAny;
 import pro.appwork.open_university.security.annotation.IsTeacher;
 import pro.appwork.open_university.service.TaskService;
 
@@ -21,9 +24,21 @@ import java.util.Optional;
 public class TaskController {
     private final TaskService taskService;
 
+    @IsAny
     @GetMapping("/{id}")
-    public String getTask(@PathVariable Long id, Model model) {
+    public String getTask(@PathVariable Long id,
+                          Authentication authentication,
+                          Model model) {
+
+        CustomUser user = ((CustomUserDetails) authentication.getPrincipal()).user();
+        if (user instanceof Student student && taskService.taskNotForStudent(id, student)) {
+            //Если студент пытается открыть задания не для его группы,
+            //то отправляем его на страницу своей группы
+            return "redirect:/groups/" + student.getGroup().getId();
+        }
+
         model.addAttribute("task", taskService.getTask(id));
+
         return "task";
     }
 

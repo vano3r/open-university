@@ -11,7 +11,6 @@ import pro.appwork.open_university.model.entity.Student;
 import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.model.enums.AcademicDegreeEnum;
 import pro.appwork.open_university.model.enums.GroupStatusEnum;
-import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsAdmin;
 import pro.appwork.open_university.security.annotation.IsAny;
@@ -62,13 +61,8 @@ public class GroupController {
 
         Teacher teacher = (Teacher) user;
         Group group = groupService.getById(id);
+
         model.addAttribute("group", group);
-
-        if (teacher.rolesContains(RoleEnum.ADMIN)) {
-            model.addAttribute("lessonMap", lessonService.getAllMapBySemester(group));
-            return "group";
-        }
-
         model.addAttribute("taskTypeList", typeService.getAll());
         model.addAttribute("lessonMap", lessonService.getAllMapBySemester(group, teacher));
 

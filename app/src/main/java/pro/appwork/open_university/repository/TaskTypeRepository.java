@@ -6,4 +6,5 @@ import pro.appwork.open_university.model.entity.TaskType;
 
 @Repository
 public interface TaskTypeRepository extends JpaRepository<TaskType, Long> {
+
 }

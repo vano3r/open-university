@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -44,6 +45,7 @@
                     <li class="flex p-2 pr-8 justify-between hover:text-black" th:each="task : ${lesson.tasks}">
                         <a th:href="@{/tasks/{id} (id = ${task.id})}" th:text="${task.type.name}">Выпускная квалификационная работа (ВКР)</a>
                         <form class="flex items-center" enctype="multipart/form-data" method="post"
+                              sec:authorize="hasAuthority('TEACHER')"
                               th:action="@{/tasks/uploadFile}">
                             <input name="taskId" th:value="${task.id}" type="hidden">
                             <input name="file" type="file">
@@ -52,6 +54,7 @@
                     </li>
                     <li class="p-2 pr-8">
                         <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b"
+                              sec:authorize="hasAuthority('TEACHER')"
                               method="post"
                               th:action="@{/tasks/create}">
 
@@ -76,6 +79,7 @@
 
             <div class="flex flex-col w-full">
                 <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b"
+                      sec:authorize="hasAuthority('TEACHER')"
                       method="post"
                       th:action="@{/lessons/create}">
                     <input name="semester" th:value="${semester}" type="hidden">
