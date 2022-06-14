@@ -52,8 +52,14 @@
                               th:action="@{/tasks/create}">
 
                             <input name="lessonId" th:value="${lesson.id}" type="hidden">
-                            <label>
-                                <input name="taskType" placeholder="Введите название задания" required type="text">
+                            <label class="flex">
+                                <select required id="task" name="taskType"
+                                        class="px-4 py-1 text-lg text-gray-700 bg-gray-100 bg-opacity-50
+                                                border block border-gray-300 focus:border-indigo-500
+                                                focus:bg-transparent focus:ring-2 focus:ring-indigo-200
+                                                focus:outline-none rounded">
+                                    <option th:each="tsk: ${taskTypeList}" th:value="${tsk.name}" th:text="${tsk.name}"/>
+                                </select>
                             </label>
 
                             <button class="flex items-center text-indigo-500 hover:text-indigo-600">
@@ -78,7 +84,7 @@
                     <input name="semester" th:value="${semester}" type="hidden">
                     <input name="groupId" th:value="${group.id}" type="hidden">
                     <label>
-                        <input name="lessonName" placeholder="Введите название предмета" required type="text">
+                        <input name="lessonName" placeholder="Введите название предмета" required type="text" class="w-64">
                     </label>
                     <button class="flex items-center text-indigo-500 hover:text-indigo-600">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
