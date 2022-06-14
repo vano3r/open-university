@@ -44,13 +44,6 @@
                 <ul class="ml-24 mt-2 text-lg">
                     <li class="flex p-2 pr-8 justify-between hover:text-black" th:each="task : ${lesson.tasks}">
                         <a th:href="@{/tasks/{id} (id = ${task.id})}" th:text="${task.type.name}">Выпускная квалификационная работа (ВКР)</a>
-                        <form class="flex items-center" enctype="multipart/form-data" method="post"
-                              sec:authorize="hasAuthority('TEACHER')"
-                              th:action="@{/tasks/uploadFile}">
-                            <input name="taskId" th:value="${task.id}" type="hidden">
-                            <input name="file" type="file">
-                            <button type="submit" value="Загрузить задание">Загрузить задание</button>
-                        </form>
                     </li>
                     <li class="p-2 pr-8">
                         <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b"
@@ -84,7 +77,9 @@
                       th:action="@{/lessons/create}">
                     <input name="semester" th:value="${semester}" type="hidden">
                     <input name="groupId" th:value="${group.id}" type="hidden">
-                    <input name="lessonName" placeholder="Введите название предмета" required type="text">
+                    <label>
+                        <input name="lessonName" placeholder="Введите название предмета" required type="text">
+                    </label>
                     <button class="flex items-center text-indigo-500 hover:text-indigo-600">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

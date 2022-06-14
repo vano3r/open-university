@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum AcademicDegreeEnum {
-    BACHELOR("Бакалавр", 4),
-    MASTER("Магистр", 2);
+    BACHELOR("Бакалавриат", 4),
+    MASTER("Магистратура", 2);
 
     private final String description;
     private final Integer numberYears;

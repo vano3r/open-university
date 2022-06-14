@@ -2,10 +2,12 @@
     <h1 class="text-center text-xl font-bold mb-4">
         Новая группа
     </h1>
-    <form class="flex flex-col w-full justify-center items-center space-y-4" method="post">
+    <form class="flex flex-col w-full justify-center items-center space-y-4"
+          method="post"
+          th:action="@{/groups/create}">
         <div class="flex flex-col w-full">
             <label for="group-name" class="leading-7 text-base text-gray-600">Введите название группы</label>
-            <input id="group-name" type="text" name="name"
+            <input id="group-name" name="name" required type="text"
                    class="bg-gray-100 h-11 bg-opacity-50 rounded border border-gray-300
                             focus:border-indigo-500 focus:bg-transparent focus:ring-2
                             focus:ring-indigo-200 text-xl outline-none text-gray-700
@@ -14,7 +16,7 @@
 
         <div class="flex flex-col w-full">
             <label for="group-year" class="leading-7 text-base text-gray-600">Введите год поступления</label>
-            <input id="group-year" type="text" name="name"
+            <input id="group-year" name="year" required type="text"
                    class="bg-gray-100 h-11 bg-opacity-50 rounded border border-gray-300
                             focus:border-indigo-500 focus:bg-transparent focus:ring-2
                             focus:ring-indigo-200 text-xl outline-none text-gray-700
@@ -22,13 +24,13 @@
         </div>
 
         <div class="flex flex-col w-full">
-            <label for="group-type" class="leading-7 text-base text-gray-600">Выберити степень обучения</label>
-            <select id="group-type" class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50 border block border-gray-300
+            <label class="leading-7 text-base text-gray-600" for="group-type">Выберите степень обучения</label>
+            <select class="px-4 py-2 text-xl text-gray-700 bg-gray-100 bg-opacity-50 border block border-gray-300
                                 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200
-                                focus:outline-none rounded">
-                <option disabled selected>Квалификация</option>
-                <option>Бакалавриат</option>
-                <option>Магистратура</option>
+                                focus:outline-none rounded" id="group-type" name="degree" required>
+                <option disabled selected value="">Квалификация</option>
+                <option value="BACHELOR">Бакалавриат</option>
+                <option value="MASTER">Магистратура</option>
             </select>
         </div>
 
