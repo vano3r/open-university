@@ -9,7 +9,8 @@ import pro.appwork.open_university.model.entity.CustomUser;
 import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.Student;
 import pro.appwork.open_university.model.entity.Teacher;
-import pro.appwork.open_university.model.enums.RoleEnum;
+import pro.appwork.open_university.model.enums.AcademicDegreeEnum;
+import pro.appwork.open_university.model.enums.GroupStatusEnum;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsAdmin;
 import pro.appwork.open_university.security.annotation.IsAny;
@@ -60,13 +61,8 @@ public class GroupController {
 
         Teacher teacher = (Teacher) user;
         Group group = groupService.getById(id);
+
         model.addAttribute("group", group);
-
-        if (teacher.rolesContains(RoleEnum.ADMIN)) {
-            model.addAttribute("lessonMap", lessonService.getAllMapBySemester(group));
-            return "group";
-        }
-
         model.addAttribute("taskTypeList", typeService.getAll());
         model.addAttribute("lessonMap", lessonService.getAllMapBySemester(group, teacher));
 
@@ -75,12 +71,14 @@ public class GroupController {
 
     @PostMapping("/create")
     public String create(HttpServletRequest request,
-                         @RequestParam String name) {
+                         @RequestParam String name,
+                         @RequestParam Integer year,
+                         @RequestParam AcademicDegreeEnum degree) {
 
         String referer = Optional.of(request.getHeader("Referer"))
                 .orElse("/");
 
-        groupService.createByName(name);
+        groupService.create(name, year, degree);
 
         return "redirect:" + referer;
     }
@@ -100,12 +98,15 @@ public class GroupController {
     @PostMapping("/update/{id}")
     public String update(HttpServletRequest request,
                          @PathVariable Long id,
-                         @RequestParam String name) {
+                         @RequestParam String name,
+                         @RequestParam Integer year,
+                         @RequestParam AcademicDegreeEnum degree,
+                         @RequestParam GroupStatusEnum status) {
 
         String referer = Optional.of(request.getHeader("Referer"))
                 .orElse("/");
 
-        groupService.updateById(id, name);
+        groupService.updateById(id, name, year, degree, status);
 
         return "redirect:" + referer;
     }

@@ -13,26 +13,25 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "t_solution")
+@Table(name = "t_document")
 @SuperBuilder(toBuilder = true)
-public class Solution {
+public class Document {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column
-    private String filePath;
+    private String name;
 
     @Column
-    private String fileName;
+    private String filePath;
+
 
     @Column
     @Builder.Default
-    private LocalDateTime uploadDate = LocalDateTime.now();
+    private LocalDateTime uploadTime = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Task task;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Student student;
+    @ManyToOne
+    @JoinColumn(name = "label_id")
+    private DocumentLabel label;
 }

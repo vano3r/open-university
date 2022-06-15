@@ -66,4 +66,33 @@ public abstract class CustomUser {
     public boolean rolesContains(RoleEnum name) {
         return roles.stream().anyMatch(f -> f.getName().equals(name));
     }
+
+    public String getShortName() {
+        StringBuilder shortName = new StringBuilder();
+        shortName.append(lastName)
+                .append(" ")
+                .append(firstName.charAt(0))
+                .append(".");
+
+        if (middleName != null) {
+            shortName.append(middleName.charAt(0))
+                    .append(".");
+        }
+
+        return shortName.toString();
+    }
+
+    public String getFullName() {
+        StringBuilder fullName = new StringBuilder();
+        fullName.append(lastName)
+                .append(" ")
+                .append(firstName);
+
+        if (middleName != null) {
+            fullName.append(" ")
+                    .append(middleName);
+        }
+
+        return fullName.toString();
+    }
 }

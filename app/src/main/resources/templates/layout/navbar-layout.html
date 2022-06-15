@@ -22,21 +22,20 @@
                 Приглашение
             </a>
 
-            <!--            <a class="mr-5 hover:text-gray-900"-->
-            <!--               sec:authorize="hasAuthority('ADMIN')"-->
-            <!--               th:href="@{/groups}">-->
-            <!--                Группы-->
-            <!--            </a>-->
-
             <a class="mr-5 hover:text-gray-900"
                sec:authorize="hasAuthority('ADMIN')"
                th:href="@{/taskTypes}">
                 Типы заданий
             </a>
+
+            <a class="mr-5 hover:text-gray-900"
+               sec:authorize="hasAnyAuthority('ADMIN', 'TEACHER')"
+               th:href="@{/documents?type=master}">
+                Документы
+            </a>
         </nav>
         <form method="post" th:action="@{/logout}">
-            <!--            TODO Сделать нормальный вывод ФИО-->
-            <span>Воробьёв И.В.</span>
+            <span class="mr-4 font-semibold" th:text="${#authentication.getPrincipal().user().shortName}"></span>
             <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3
                             focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" type="submit">
                 Выйти

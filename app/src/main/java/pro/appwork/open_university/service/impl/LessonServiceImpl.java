@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pro.appwork.open_university.model.entity.Group;
 import pro.appwork.open_university.model.entity.Lesson;
 import pro.appwork.open_university.model.entity.Teacher;
+import pro.appwork.open_university.model.enums.RoleEnum;
 import pro.appwork.open_university.model.enums.Semester;
 import pro.appwork.open_university.repository.GroupRepository;
 import pro.appwork.open_university.repository.LessonRepository;
@@ -64,22 +65,41 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public Map<Semester, List<Lesson>> getAllMapBySemester(Group group, Teacher teacher) {
-        return createMapBySemester(
-                lessonRepository.findAllByGroupAndTeacher(group, teacher),
-                group
-        );
+        Map<Semester, List<Lesson>> map;
+        if (teacher.rolesContains(RoleEnum.ADMIN)) {
+            map = createMapBySemester(
+                    lessonRepository.findAllByGroupOrderByName(group)
+            );
+        } else {
+            map = createMapBySemester(
+                    lessonRepository.findAllByGroupAndTeacherOrderByName(group, teacher)
+            );
+        }
+
+        for (var semester : Semester.getAll()) {
+            if (!map.containsKey(semester)) {
+                map.put(semester, List.of());
+            }
+        }
+
+        return map;
     }
 
     @Override
     public Map<Semester, List<Lesson>> getAllMapBySemester(Group group) {
-        return createMapBySemester(
-                lessonRepository.findAllByGroup(group),
-                group
+        var map = createMapBySemester(
+                lessonRepository.findAllByGroupAndTasksExists(group.getId())
         );
+
+        if (map.isEmpty()) {
+            map.put(Semester.FIRST, List.of());
+        }
+
+        return map;
     }
 
-    private Map<Semester, List<Lesson>> createMapBySemester(List<Lesson> list, Group group) {
-        var map = list.stream()
+    private Map<Semester, List<Lesson>> createMapBySemester(List<Lesson> list) {
+        return list.stream()
                 .collect(Collectors.groupingBy(Lesson::getSemester))
                 .entrySet()
                 .stream()
@@ -90,11 +110,5 @@ public class LessonServiceImpl implements LessonService {
                         (e1, e2) -> e1,
                         LinkedHashMap::new
                 ));
-
-        if (!map.containsKey(group.getActualSemester())) {
-            map.put(group.getActualSemester(), List.of());
-        }
-
-        return map;
     }
 }

@@ -1,6 +1,8 @@
 package pro.appwork.open_university.service;
 
 import pro.appwork.open_university.model.entity.Group;
+import pro.appwork.open_university.model.enums.AcademicDegreeEnum;
+import pro.appwork.open_university.model.enums.GroupStatusEnum;
 
 import java.util.List;
 
@@ -9,9 +11,9 @@ public interface GroupService {
 
     Group getById(Long id);
 
-    void createByName(String name);
+    void create(String name, Integer year, AcademicDegreeEnum degree);
 
     void deleteById(Long id);
 
-    void updateById(Long id, String name);
+    void updateById(Long id, String name, Integer year, AcademicDegreeEnum degree, GroupStatusEnum status);
 }

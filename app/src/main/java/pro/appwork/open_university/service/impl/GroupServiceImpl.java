@@ -3,10 +3,13 @@ package pro.appwork.open_university.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pro.appwork.open_university.model.entity.Group;
+import pro.appwork.open_university.model.enums.AcademicDegreeEnum;
+import pro.appwork.open_university.model.enums.GroupStatusEnum;
 import pro.appwork.open_university.repository.GroupRepository;
 import pro.appwork.open_university.service.GroupService;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,8 +30,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void createByName(String name) {
-        Group newGroup = Group.builder().name(name).build();
+    public void create(String name, Integer year, AcademicDegreeEnum degree) {
+        LocalDate startDate = LocalDate.of(year, 9, 1);
+
+        Group newGroup = Group.builder()
+                .name(name)
+                .learningStartDate(startDate)
+                .learningEndDate(startDate.plusYears(degree.getNumberYears()))
+                .academicDegree(degree)
+                .status(GroupStatusEnum.ACTIVE)
+                .build();
 
         groupRepository.save(newGroup);
     }
@@ -43,11 +54,22 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void updateById(Long id, String name) {
+    public void updateById(Long id, String name, Integer year,
+                           AcademicDegreeEnum degree, GroupStatusEnum status) {
+
         Group group = groupRepository.findById(id).orElseThrow(
                 EntityNotFoundException::new
         );
-        Group newGroup = group.toBuilder().name(name).build();
+
+        LocalDate startDate = LocalDate.of(year, 9, 1);
+
+        Group newGroup = group.toBuilder()
+                .name(name)
+                .learningStartDate(startDate)
+                .learningEndDate(startDate.plusYears(degree.getNumberYears()))
+                .academicDegree(degree)
+                .status(status)
+                .build();
 
         groupRepository.save(newGroup);
     }
