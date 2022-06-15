@@ -68,11 +68,11 @@ public class LessonServiceImpl implements LessonService {
         Map<Semester, List<Lesson>> map;
         if (teacher.rolesContains(RoleEnum.ADMIN)) {
             map = createMapBySemester(
-                    lessonRepository.findAllByGroup(group)
+                    lessonRepository.findAllByGroupOrderByName(group)
             );
         } else {
             map = createMapBySemester(
-                    lessonRepository.findAllByGroupAndTeacher(group, teacher)
+                    lessonRepository.findAllByGroupAndTeacherOrderByName(group, teacher)
             );
         }
 

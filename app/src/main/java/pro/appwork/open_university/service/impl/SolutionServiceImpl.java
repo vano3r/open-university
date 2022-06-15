@@ -21,8 +21,10 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,16 +39,29 @@ public class SolutionServiceImpl implements SolutionService {
                 EntityNotFoundException::new
         );
 
+        Optional<Solution> optSolution = solutionRepository.findFirstByStudentAndTask(student, task);
+
         Path path = createPath(student, task, file.getOriginalFilename());
         fileStorage.upload(path, file);
 
-        solutionRepository.save(Solution.builder()
-                .task(task)
-                .student(student)
-                .fileName(file.getOriginalFilename())
-                .filePath(path.toString())
-                .build()
-        );
+        if (optSolution.isPresent()) {
+            fileStorage.delete(Path.of(optSolution.get().getFilePath()));
+
+            solutionRepository.save(optSolution.get().toBuilder()
+                    .filePath(path.toString())
+                    .fileName(file.getOriginalFilename())
+                    .uploadDate(LocalDateTime.now())
+                    .build()
+            );
+        } else {
+            solutionRepository.save(Solution.builder()
+                    .task(task)
+                    .student(student)
+                    .fileName(file.getOriginalFilename())
+                    .filePath(path.toString())
+                    .build()
+            );
+        }
     }
 
     @Override

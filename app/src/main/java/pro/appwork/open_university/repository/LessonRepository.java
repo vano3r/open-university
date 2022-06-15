@@ -12,14 +12,15 @@ import java.util.List;
 
 @Repository
 public interface LessonRepository extends CrudRepository<Lesson, Long> {
-    List<Lesson> findAllByGroupAndTeacher(Group group, Teacher teacher);
+    List<Lesson> findAllByGroupAndTeacherOrderByName(Group group, Teacher teacher);
 
     @Query(value = """
             SELECT l.* FROM t_lesson l
             WHERE l.group_id = :groupId
                 AND EXISTS (SELECT id FROM t_task t WHERE l.id = t.lesson_id)
+            ORDER BY l.name
             """, nativeQuery = true)
     List<Lesson> findAllByGroupAndTasksExists(@Param("groupId") Long groupId);
 
-    List<Lesson> findAllByGroup(Group group);
+    List<Lesson> findAllByGroupOrderByName(Group group);
 }
