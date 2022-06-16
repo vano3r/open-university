@@ -1,6 +1,12 @@
 package pro.appwork.open_university.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.appwork.open_university.model.entity.Document;
@@ -11,6 +17,8 @@ import pro.appwork.open_university.repository.DocumentRepository;
 import pro.appwork.open_university.service.DocumentService;
 import pro.appwork.open_university.service.FileStorage;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,8 +60,11 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void createDocument(Teacher teacher, String labelName, MultipartFile file) {
-        DocumentLabel label = labelRepository.findByTeacherAndName(teacher, labelName).orElseThrow();
+        DocumentLabel label = labelRepository.findByTeacherAndName(teacher, labelName)
+                .orElse(DocumentLabel.builder().name(labelName).teacher(teacher).build());
 
+
+        labelRepository.save(label);
         var optDocument = documentRepository.findByLabelAndName(label, file.getOriginalFilename());
         Path path = createPath(teacher, labelName, file.getOriginalFilename());
 
@@ -73,17 +84,34 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public void deleteDocument(Teacher teacher, String labelName, String documentName) {
-        DocumentLabel label = labelRepository.findByTeacherAndName(teacher, labelName).orElseThrow();
-        Document document = documentRepository.findByLabelAndName(label, documentName).orElseThrow();
+    public void deleteDocument(Teacher teacher, Long id) {
+        Document document = documentRepository.findById(id).orElseThrow();
 
         Path path = Path.of(document.getFilePath());
-        if (fileStorage.notExists(path)) {
-            throw new RuntimeException();
-        }
 
         documentRepository.delete(document);
         fileStorage.delete(path);
+    }
+
+    @Override
+    public ResponseEntity<InputStreamResource> downloadFile(Teacher teacher, Long id) {
+        Document document = documentRepository.findById(id).orElseThrow();
+
+        try {
+            Resource file = fileStorage.download(Path.of(document.getFilePath()));
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            ContentDisposition.attachment()
+                                    .filename(document.getName(), StandardCharsets.UTF_8)
+                                    .build().toString()
+                    )
+                    .contentLength(file.contentLength())
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(new InputStreamResource(file.getInputStream()));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Path createPath(Teacher teacher, String labelName, String fileName) {

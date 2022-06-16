@@ -1,5 +1,7 @@
 package pro.appwork.open_university.service;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import pro.appwork.open_university.model.entity.Document;
 import pro.appwork.open_university.model.entity.DocumentLabel;
@@ -18,5 +20,7 @@ public interface DocumentService {
 
     void createDocument(Teacher teacher, String labelName, MultipartFile file);
 
-    void deleteDocument(Teacher teacher, String labelName, String documentName);
+    void deleteDocument(Teacher teacher, Long id);
+
+    ResponseEntity<InputStreamResource> downloadFile(Teacher teacher, Long id);
 }

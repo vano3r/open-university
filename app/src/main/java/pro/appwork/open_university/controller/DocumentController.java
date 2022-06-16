@@ -1,6 +1,8 @@
 package pro.appwork.open_university.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,11 +37,11 @@ public class DocumentController {
         return "document-list";
     }
 
-    @PostMapping("/create")
-    public String createDocument(Authentication authentication,
-                                 @RequestParam String labelName,
-                                 @RequestParam MultipartFile file,
-                                 @RequestHeader("Referer") String referer) {
+    @PostMapping("/upload")
+    public String uploadFile(Authentication authentication,
+                             @RequestParam String labelName,
+                             @RequestParam MultipartFile file,
+                             @RequestHeader("Referer") String referer) {
 
         Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
 
@@ -47,15 +49,14 @@ public class DocumentController {
         return "redirect:" + referer;
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete/{id}")
     public String deleteDocument(Authentication authentication,
-                                 @RequestParam String labelName,
-                                 @RequestParam String documentName,
+                                 @PathVariable Long id,
                                  @RequestHeader("Referer") String referer) {
 
         Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
 
-        documentService.deleteDocument(teacher, labelName, documentName);
+        documentService.deleteDocument(teacher, id);
 
         return "redirect:" + referer;
     }
@@ -76,5 +77,15 @@ public class DocumentController {
 
         documentService.deleteLabel(teacher, labelName);
         return "";
+    }
+
+    @ResponseBody
+    @GetMapping("/download/{id}")
+    public ResponseEntity<InputStreamResource> downloadFile(Authentication authentication,
+                                                            @PathVariable Long id) {
+
+        Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
+
+        return documentService.downloadFile(teacher, id);
     }
 }
