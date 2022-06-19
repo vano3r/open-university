@@ -16,6 +16,7 @@ import pro.appwork.open_university.model.entity.Teacher;
 import pro.appwork.open_university.security.CustomUserDetails;
 import pro.appwork.open_university.security.annotation.IsAny;
 import pro.appwork.open_university.security.annotation.IsTeacher;
+import pro.appwork.open_university.service.LessonService;
 import pro.appwork.open_university.service.SolutionService;
 import pro.appwork.open_university.service.TaskService;
 
@@ -65,6 +66,18 @@ public class TaskController {
         Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
 
         taskService.create(teacher, lessonId, taskType);
+
+        return "redirect:" + referer;
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(HttpServletRequest request,
+                         Authentication authentication,
+                         @PathVariable Long id) {
+        String referer = Optional.of(request.getHeader("Referer"))
+                .orElse("/");
+
+        taskService.delete(id);
 
         return "redirect:" + referer;
     }

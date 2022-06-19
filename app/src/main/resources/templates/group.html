@@ -11,6 +11,9 @@
     <title>Учебный процесс</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.bpopup.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div th:insert="~{layout/navbar-layout}"></div>
@@ -29,23 +32,40 @@
                 Первый семестр</h2>
 
             <div class="flex flex-col w-full" th:each="lesson : ${lessonMap.get(semester)}">
-                <div class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 14l9-5-9-5-9 5 9 5z"/>
-                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-                        <path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"/>
-                    </svg>
-                    <h3 th:text="${lesson.name}">Теория принятия решения</h3>
+                <div class="flex justify-between text-xl pt-4 pr-4 pb-2 ml-8 border-b">
+                    <div class="flex items-center space-x-3">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                            <path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+
+                        <h3 th:text="${lesson.name}">Теория принятия решения</h3>
+                    </div>
+
+                    <button type="button" class="hover:text-red-500"
+                            th:attr="onclick=|General.showDeleteConfirmModalWithParams('@{/lessons/delete/{id} (id = ${lesson.id})}', '${lesson.name}', 'null', 'null')|">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                 </div>
 
                 <ul class="ml-24 mt-2 text-lg">
-                    <li class="flex p-2 pr-8 justify-between hover:text-black" th:each="task : ${lesson.tasks}">
+                    <li class="flex p-2 pr-4 justify-between hover:text-black" th:each="task : ${lesson.tasks}">
                         <a th:href="@{/tasks/{id} (id = ${task.id})}" th:text="${task.type.name}">Выпускная квалификационная работа (ВКР)</a>
+
+                        <button type="button" class="hover:text-red-500"
+                                th:attr="onclick=|General.showDeleteConfirmModalWithParams('@{/tasks/delete/{id} (id = ${task.id})}', '${task.type.name}', 'null', 'null')|">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </li>
-                    <li class="p-2 pr-8">
+                    <li class="p-2 pr-4">
                         <form class="flex text-xl items-center space-x-3 pt-4 pr-4 pb-2 ml-8 border-b"
                               sec:authorize="hasAuthority('TEACHER')"
                               method="post"
@@ -99,5 +119,7 @@
         </div>
     </div>
 </section>
+
+<div th:insert="~{modal/document-confirm-delete-modal.html}"></div>
 </body>
 </html>

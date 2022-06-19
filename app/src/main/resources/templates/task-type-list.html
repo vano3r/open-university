@@ -11,6 +11,9 @@
     <title>Редактирование работ</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.bpopup.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div th:insert="~{./layout/navbar-layout}"></div>
@@ -48,18 +51,19 @@
 
                     [[${type.name}]]
 
-                    <form method="post" th:action="@{/taskTypes/delete/{id} (id = ${type.id})}">
-                        <button type="submit">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </form>
+                    <button type="button" class="hover:text-red-500"
+                            th:attr="onclick=|General.showDeleteConfirmModalWithParams('@{/taskTypes/delete/{id} (id = ${type.id})}', '${type.name}', 'null', 'null')|">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                 </li>
             </ul>
         </div>
     </div>
 </section>
+
+<div th:insert="~{modal/document-confirm-delete-modal.html}"></div>
 </body>
 </html>

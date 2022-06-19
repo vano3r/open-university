@@ -23,7 +23,7 @@ GroupList.showGroupModalWithParams = function (groupName, learningStartDate, aca
     $('#group-type').val(academicDegree);
 }
 
-DocumentList.showDeleteConfirmModalWithParams = function (actionForm, nameObject, deleteObjectFormName, deleteObjectFormValue) {
+General.showDeleteConfirmModalWithParams = function (actionForm, nameObject, deleteObjectFormName, deleteObjectFormValue) {
     General.showStandardModal('document-confirm-delete-modal');
     $('#delete-form').attr('action', actionForm);
     $('#delete-name-object').text(nameObject);

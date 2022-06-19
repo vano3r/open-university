@@ -45,7 +45,7 @@
             </a>
 
             <button type="button"
-                    th:attr="onclick=|DocumentList.showDeleteConfirmModalWithParams('@{/documents/labels/delete}', '${label.name}', 'labelName', '${label.name}')|">
+                    th:attr="onclick=|General.showDeleteConfirmModalWithParams('@{/documents/labels/delete}', '${label.name}', 'labelName', '${label.name}')|">
                 <svg class="h-8 w-8 p-1 mt-0.5 hover:text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -65,7 +65,7 @@
                     скачать файл
                 </a>
                 <button type="button"
-                        th:attr="onclick=|DocumentList.showDeleteConfirmModalWithParams('@{/documents/delete/{id} (id = ${document.id})}', '${document.name}', 'null', 'null')|"
+                        th:attr="onclick=|General.showDeleteConfirmModalWithParams('@{/documents/delete/{id} (id = ${document.id})}', '${document.name}', 'null', 'null')|"
                         class="text-red-500 hover:text-red-700">
                     удалить
                 </button>
