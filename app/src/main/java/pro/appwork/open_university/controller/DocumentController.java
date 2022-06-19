@@ -71,12 +71,21 @@ public class DocumentController {
     }
 
     @PostMapping("/labels/delete")
-    public String deleteLabel(Authentication authentication,
+    public String deleteLabel(Model model,
+                              Authentication authentication,
                               @RequestParam String labelName) {
         Teacher teacher = (Teacher) ((CustomUserDetails) authentication.getPrincipal()).user();
 
         documentService.deleteLabel(teacher, labelName);
-        return "";
+
+        model.addAttribute("labelList", documentService.getAllLabels(teacher));
+
+        if (labelName != null) {
+            model.addAttribute("documentListByLabel", documentService.getAllDocumentByLabel(teacher, labelName));
+            model.addAttribute("currentLabelName", labelName);
+        }
+
+        return "document-list";
     }
 
     @ResponseBody

@@ -7,7 +7,8 @@
 
     <script type="text/javascript" src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.bpopup.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div th:insert="~{./layout/navbar-layout}"></div>
@@ -35,24 +36,20 @@
     <hr class="mb-12"/>
 
     <div class="labels flex flex-wrap mb-12">
-        <a class="flex items-center bg-gray-200 hover:bg-gray-400 px-3 py-1 m-2 rounded-2xl text-xl"
-           th:classappend="${currentLabelName == label.name ? 'bg-gray-400' : ''}"
-           th:each="label: ${labelList}"
-           th:href="@{/documents/(labelName=${label.name})}"
+        <div th:each="label: ${labelList}"
+             th:classappend="${currentLabelName == label.name ? 'bg-gray-300' : ''}"
+             class="flex bg-gray-200 hover:bg-gray-400 rounded-2xl text-xl m-2">
+            <a th:href="@{/documents/(labelName=${label.name})}"
+               class="pl-3 pr-1 py-1">
+                [[${label.name}]]
+            </a>
 
-        >
-            <span th:text="${label.name}">все документы</span>
-        </a>
-        <!--        <form th:action="@{/documents/labels/delete}">-->
-        <!--            <input type="hidden" th:value="${label.name}">-->
-        <!--            <button type="submit">-->
-        <!--                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-0.5 ml-1 hover:text-red-500" fill="none" &ndash;&gt;-->
-        <!--                    viewBox="0 0 24 24"-->
-        <!--                    stroke="currentColor" stroke-width="2">-->
-        <!--                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>-->
-        <!--                </svg>-->
-        <!--            </button>-->
-        <!--        </form>-->
+            <button type="button" th:attr="onclick=|DocumentList.showDeleteConfirmModalWithParams('@{/documents/labels/delete}', '${label.name}', 'labelName', '${label.name}')|">
+                <svg class="h-8 w-8 p-1 mt-0.5 hover:text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <hr class="mb-12"/>
@@ -76,5 +73,7 @@
         </li>
     </ul>
 </section>
+
+<div th:insert="~{modal/document-confirm-delete-modal.html}"></div>
 </body>
 </html>

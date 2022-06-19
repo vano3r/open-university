@@ -1,0 +1,27 @@
+<div id="document-confirm-delete-modal" class="hidden bg-white p-12 rounded">
+    <h1 class="text-center text-xl font-bold mb-4">
+        Подтверждение
+    </h1>
+    <hr class="mb-4">
+    <p class="mb-4">
+        Вы уверены что хотите удалить <span id="delete-name-object"></span>
+    </p>
+    <form id="delete-form"
+          class="flex justify-center w-full space-x-4"
+          method="post">
+
+        <button type="button"
+                onclick="General.closeStandardModal('document-confirm-delete-modal')"
+                class="text-white bg-green-500 border-0 py-2 px-8 mt-4 focus:outline-none
+                        hover:bg-green-600 rounded text-xl">
+            Нет
+        </button>
+
+        <input id="delete-object" type="hidden" name="labelName">
+
+        <button class="text-white bg-red-500 border-0 py-2 px-8 mt-4 focus:outline-none
+                        hover:bg-red-600 rounded text-xl" type="submit">
+            Да
+        </button>
+    </form>
+</div>
