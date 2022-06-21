@@ -1,15 +1,17 @@
 package pro.appwork.open_university.model.entity;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
-
 @Entity
 @Getter
-@Builder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-public class Student extends DefaultUser {
+@Table(name = "t_student")
+public class Student extends CustomUser {
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    Group group;
 }

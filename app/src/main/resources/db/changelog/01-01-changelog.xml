@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1654108979280-1" author="ivan.vorobev (generated)">
+        <createTable tableName="t_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_user_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="middle_name" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-2" author="ivan.vorobev (generated)">
+        <createTable tableName="t_registration_token">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_registration_token_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="expired_date" type="timestamp"/>
+            <column name="role_id" type="BIGINT"/>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="group_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-3" author="ivan.vorobev (generated)">
+        <addUniqueConstraint columnNames="email" constraintName="uk_i6qjjoe560mee5ajdg7v1o6mi" tableName="t_user"/>
+    </changeSet>
+    <changeSet id="1654108979280-4" author="ivan.vorobev (generated)">
+        <addUniqueConstraint columnNames="token" constraintName="uk_rfd9dssnxebug9274jue2g845"
+                             tableName="t_registration_token"/>
+    </changeSet>
+    <changeSet id="1654108979280-5" author="ivan.vorobev (generated)">
+        <createTable tableName="t_group">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_group_pkey"/>
+            </column>
+            <column name="actual_semester" type="INT"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-6" author="ivan.vorobev (generated)">
+        <createTable tableName="t_lesson">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_lesson_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="semester" type="INT"/>
+            <column name="group_id" type="BIGINT"/>
+            <column name="teacher_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-7" author="ivan.vorobev (generated)">
+        <createTable tableName="t_role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_role_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-8" author="ivan.vorobev (generated)">
+        <createTable tableName="t_solution">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_solution_pkey"/>
+            </column>
+            <column name="file_path" type="VARCHAR(255)"/>
+            <column name="version" type="INT"/>
+            <column name="student_id" type="BIGINT"/>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-9" author="ivan.vorobev (generated)">
+        <createTable tableName="t_student">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_student_pkey"/>
+            </column>
+            <column name="group_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-10" author="ivan.vorobev (generated)">
+        <createTable tableName="t_task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_task_pkey"/>
+            </column>
+            <column name="file_path" type="VARCHAR(255)"/>
+            <column name="lesson_id" type="BIGINT"/>
+            <column name="type_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-11" author="ivan.vorobev (generated)">
+        <createTable tableName="t_task_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_task_type_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-12" author="ivan.vorobev (generated)">
+        <createTable tableName="t_teacher">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_teacher_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-13" author="ivan.vorobev (generated)">
+        <createTable tableName="t_user_role">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_user_role_pkey"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_user_role_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1654108979280-14" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="t_lesson"
+                                 constraintName="fk19byr6rw7c14q2n47h2952x0b" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_group"/>
+    </changeSet>
+    <changeSet id="1654108979280-15" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="t_student"
+                                 constraintName="fk1k47ir3oau4gpbdv25qxm8eq1" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_user"/>
+    </changeSet>
+    <changeSet id="1654108979280-16" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="t_solution"
+                                 constraintName="fk2jtvaw0w84kvo3hvfx4der7nh" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_task"/>
+    </changeSet>
+    <changeSet id="1654108979280-17" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="t_task"
+                                 constraintName="fk3x4bb84cx6hboecxa3u090hvi" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_task_type"/>
+    </changeSet>
+    <changeSet id="1654108979280-18" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="lesson_id" baseTableName="t_task"
+                                 constraintName="fk5tc8olcx7yx8hgf6xmikj7b47" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_lesson"/>
+    </changeSet>
+    <changeSet id="1654108979280-19" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="t_user_role"
+                                 constraintName="fka9c8iiy6ut0gnx491fqx4pxam" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_role"/>
+    </changeSet>
+    <changeSet id="1654108979280-20" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="t_lesson"
+                                 constraintName="fkct4mdhj06sw6bh0as1d63fqw2" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_teacher"/>
+    </changeSet>
+    <changeSet id="1654108979280-21" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="t_student"
+                                 constraintName="fkdkyalbw046i1q8e7d4xef4nsf" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_group"/>
+    </changeSet>
+    <changeSet id="1654108979280-22" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="t_teacher"
+                                 constraintName="fkdso3xyjo9ec56agcq9sb5umle" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_user"/>
+    </changeSet>
+    <changeSet id="1654108979280-23" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="t_registration_token"
+                                 constraintName="fkntn29l0c8ht4fuqfq3kfmti0w" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_group"/>
+
+    </changeSet>
+    <changeSet id="1654114262337-1" author="ivan.vorobev">
+        <addForeignKeyConstraint baseTableName="t_registration_token" baseColumnNames="role_id"
+                                 referencedTableName="t_role" referencedColumnNames="id"
+                                 constraintName="fk_t_registration_token_t_role" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="1654108979280-24" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="t_user_role"
+                                 constraintName="fkq5un6x7ecoef5w1n39cop66kl" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_user"/>
+    </changeSet>
+    <changeSet id="1654108979280-25" author="ivan.vorobev (generated)">
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="t_solution"
+                                 constraintName="fkswrqg8j3jdytx29ctset23msi" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="t_student"/>
+    </changeSet>
+
+</databaseChangeLog>
